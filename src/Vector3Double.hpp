@@ -20,4 +20,4 @@ class Vector3Double {
         Vector3Double operator*(double scalaire);
 
         double norme() const;
-}
+};
