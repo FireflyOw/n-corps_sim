@@ -33,10 +33,16 @@ endif()
 
 # --- Tests ---------------------------------------------------------------
 enable_testing()
- 
+
+target_include_directories(Vec3D_test PRIVATE tests)
 add_executable(Vec3D_test tests/Vec3D_test.cpp)
 target_link_libraries(Vec3D_test PRIVATE sim)
 add_test(NAME vec3 COMMAND Vec3D_test)
+
+arget_include_directories(Univers_test PRIVATE tests)
+add_executable(Univers_test tests/Univers_test.cpp)
+target_link_libraries(Univers_test PRIVATE sim)
+add_test(NAME vec3 COMMAND Univers_test)
  
 # --- Plus tard : l'exécutable de la simulation ---------------------------
 # add_executable(nbody src/main.cpp)
