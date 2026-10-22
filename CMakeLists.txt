@@ -16,6 +16,43 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Type de build" FORCE)
 endif()
 
+# --- Affichage : raylib ---------------------------------------------------
+# SIM_AFFICHAGE=OFF permet de ne compiler que la simulation et les tests
+# (par exemple sur une machine sans écran ni pilotes graphiques) :
+#     cmake -B build -DSIM_AFFICHAGE=OFF
+# Ce bloc est placé AVANT add_compile_options pour que nos avertissements
+# (-Wall -Wextra...) ne s'appliquent pas au code de raylib lui-même.
+option(SIM_AFFICHAGE "Compiler les programmes d'affichage (telecharge raylib)" ON)
+
+if(SIM_AFFICHAGE)
+    include(FetchContent)
+
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+    # Sous Linux, raylib utilise X11 par défaut (donc XWayland sur une session
+    # Wayland). Si les paquets de développement Wayland sont présents, on active
+    # aussi le support natif : GLFW choisit ensuite le bon à l'exécution.
+    if(UNIX AND NOT APPLE)
+        find_package(PkgConfig QUIET)
+        if(PkgConfig_FOUND)
+            pkg_check_modules(WAYLAND_DEPS QUIET wayland-client xkbcommon wayland-protocols)
+        endif()
+        if(WAYLAND_DEPS_FOUND)
+            message(STATUS "Wayland detecte : raylib sera compile avec le support Wayland")
+            set(GLFW_BUILD_WAYLAND ON CACHE BOOL "" FORCE)
+        endif()
+    endif()
+
+    # CMake télécharge et compile raylib lors de la première configuration
+    FetchContent_Declare(
+        raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG        6.2
+        GIT_SHALLOW    TRUE
+    )
+    FetchContent_MakeAvailable(raylib)
+endif()
+
 # --- Avertissements du compilateur --------------------------------------
 # À placer AVANT la création des cibles : add_compile_options ne s'applique
 # qu'aux cibles créées après lui.
@@ -54,9 +91,16 @@ ajouter_test(Physique_test tests/Physique_test.cpp)
 ajouter_test(Integrateurs_test tests/Integrateurs_test.cpp)
 
 # --- Programmes d'exemple ------------------------------------------------
-add_executable(Comparaison_test tests/Comparaison_test.cpp)
-target_link_libraries(Comparaison_test PRIVATE sim)
+add_executable(comp_integrateurs exemples/comp_integrateurs.cpp)
+target_link_libraries(comp_integrateurs PRIVATE sim)
 
-# --- Plus tard : l'exécutable de la simulation ---------------------------
-# add_executable(nbody src/main.cpp)
-# target_link_libraries(nbody PRIVATE sim)
+# --- Affichage -----------------------------------------------------------
+if(SIM_AFFICHAGE)
+    # Petit programme qui ouvre une fenêtre : sert à vérifier que raylib fonctionne
+    add_executable(fenetre_Raylib exemples/fenetre_Raylib.cpp)
+    target_link_libraries(fenetre_Raylib PRIVATE raylib)
+
+    # Plus tard : le programme de simulation, qui a besoin des DEUX bibliothèques
+    # add_executable(nbody src/main.cpp)
+    # target_link_libraries(nbody PRIVATE sim raylib)
+endif()
