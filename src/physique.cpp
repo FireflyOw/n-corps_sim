@@ -72,10 +72,6 @@ void pasLeapfrog(Univers& univers, double dt) {
     univers.temps += dt;
 }
 
-void simuler(Univers& univers, Integrateur integrateur, double dt) {
-    
-}
-
 double energieTotale(const Univers& univers) {
     const std::size_t nbCorps = univers.taille();
 
