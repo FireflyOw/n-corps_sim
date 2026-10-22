@@ -89,7 +89,7 @@ double energieTotale(const Univers& univers) {
             Vector3Double vecDistance = univers.positions[iAutre] - univers.positions[iCorps];
             double distance = std::sqrt(vecDistance.norme2() + univers.epsilon * univers.epsilon);
             
-            energiePotentielle += univers.G * univers.masses[iCorps] * univers.masses[iAutre] / distance;
+            energiePotentielle -= univers.G * univers.masses[iCorps] * univers.masses[iAutre] / distance;
         }
     }
 
