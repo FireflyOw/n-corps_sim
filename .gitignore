@@ -1,0 +1,40 @@
+# Dossiers de compilation (générés par CMake, jamais versionnés)
+build/
+build-*/
+cmake-build-*/
+out/
+ 
+# Fichiers générés par CMake à la racine ou par les éditeurs
+compile_commands.json
+CMakeUserPresets.json
+.cache/
+ 
+# Fichiers compilés
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+*.pdb
+ 
+# Éditeurs et IDE
+.vscode/
+.idea/
+.vs/
+*.swp
+*~
+ 
+# Fichiers système
+.DS_Store
+Thumbs.db
+ 
+# Plus tard : gros fichiers produits par les simulations
+# (snapshots, images, vidéos). À garder hors du dépôt.
+output/
+snapshots/
+*.ppm
+*.mp4
