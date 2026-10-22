@@ -51,6 +51,11 @@ endfunction()
 ajouter_test(Vec3D_test    tests/Vec3D_test.cpp)
 ajouter_test(Univers_test  tests/Univers_test.cpp)
 ajouter_test(Physique_test tests/Physique_test.cpp)
+ajouter_test(Integrateurs_test tests/Integrateurs_test.cpp)
+
+# --- Programmes d'exemple ------------------------------------------------
+add_executable(Comparaison_test tests/Comparaison_test.cpp)
+target_link_libraries(Comparaison_test PRIVATE sim)
 
 # --- Plus tard : l'exécutable de la simulation ---------------------------
 # add_executable(nbody src/main.cpp)
