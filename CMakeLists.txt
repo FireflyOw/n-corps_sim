@@ -68,7 +68,7 @@ endif()
 # PUBLIC : le dossier include/ sert à compiler la bibliothèque elle-même
 # ET à tous ceux qui la lient (tests, futur programme).
 add_library(sim STATIC
-    src/Physique.cpp
+    src/physique.cpp
 )
 target_include_directories(sim PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(sim PUBLIC cxx_std_17)
@@ -85,9 +85,9 @@ function(ajouter_test nom fichier)
     add_test(NAME ${nom} COMMAND ${nom})
 endfunction()
 
-ajouter_test(Vec3D_test    tests/Vec3D_test.cpp)
-ajouter_test(Univers_test  tests/Univers_test.cpp)
-ajouter_test(Physique_test tests/Physique_test.cpp)
+ajouter_test(Vec3D_test        tests/Vec3D_test.cpp)
+ajouter_test(Univers_test      tests/Univers_test.cpp)
+ajouter_test(Physique_test     tests/Physique_test.cpp)
 ajouter_test(Integrateurs_test tests/Integrateurs_test.cpp)
 
 # --- Programmes d'exemple ------------------------------------------------
@@ -100,7 +100,7 @@ if(SIM_AFFICHAGE)
     add_executable(fenetre_Raylib exemples/fenetre_Raylib.cpp)
     target_link_libraries(fenetre_Raylib PRIVATE raylib)
 
-    # Plus tard : le programme de simulation, qui a besoin des DEUX bibliothèques
-    # add_executable(nbody src/main.cpp)
-    # target_link_libraries(nbody PRIVATE sim raylib)
+    # Programme principal avec physique et affichage
+    add_executable(nbody src/main.cpp)
+    target_link_libraries(nbody PRIVATE sim raylib)
 endif()
