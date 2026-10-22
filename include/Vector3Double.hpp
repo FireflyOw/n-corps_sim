@@ -42,7 +42,8 @@ class Vector3Double {
         }
 
         Vector3Double operator/(double s) const {
-            return Vector3Double(x * (1 / s), y * (1 / s), z * (1 / s));
+            const double inverse = (1 / s);
+            return Vector3Double(x * inverse, y * inverse, z * inverse);
         }
 
         double norme() const {
