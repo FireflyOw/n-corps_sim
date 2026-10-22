@@ -21,9 +21,10 @@ void calculAccelerations(Univers& univers) {
             double distanceInverse  = 1 / std::sqrt(distance2);
             double distanceInverse3 = distanceInverse * distanceInverse * distanceInverse;
 
-            // Application de la formule de Newton pour le calcul des accélérations (égales et opposées)
+            // Application de la formule de Newton pour le calcul des 
+            // accélérations (opposées et dépendantes de la masse de l'autre corps)
             univers.accelerations[iCorps] += vecDistance * univers.G * univers.masses[iAutre] * distanceInverse3;
-            univers.accelerations[iAutre] += vecDistance * univers.G * univers.masses[iCorps] * distanceInverse3;
+            univers.accelerations[iAutre] -= vecDistance * univers.G * univers.masses[iCorps] * distanceInverse3;
         }
     }
 }
