@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Vector3Double.hpp"
 
-inline int verifier(bool condition, const char* nom, int& echecs) {
+inline void verifier(bool condition, const char* nom, int& echecs) {
     if (!condition) {
         std::cout << "ECHEC : " << nom << "\n";
         ++echecs;
