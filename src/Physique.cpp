@@ -29,7 +29,7 @@ void calculAccelerations(Univers& univers) {
     }
 }
 
-void Euler(Univers& univers, double dt) {
+void pasEuler(Univers& univers, double dt) {
     calculAccelerations(univers);
 
     for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
@@ -41,7 +41,7 @@ void Euler(Univers& univers, double dt) {
     univers.temps += dt;
 }
 
-void EulerSymplectique(Univers& univers, double dt) {
+void pasEulerSymplectique(Univers& univers, double dt) {
     calculAccelerations(univers);
 
     for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
@@ -53,7 +53,7 @@ void EulerSymplectique(Univers& univers, double dt) {
     univers.temps += dt;  
 }
 
-void Leapfrog(Univers& univers, double dt) {
+void pasLeapfrog(Univers& univers, double dt) {
     // Premier pas de l'intégrateur
     for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
         univers.vitesses[iCorps]  += univers.accelerations[iCorps] * (dt / 2); // kick

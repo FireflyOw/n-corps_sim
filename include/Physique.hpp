@@ -5,8 +5,8 @@
 
 void calculAccelerations(Univers& univers);
 
-void Euler(Univers& univers, double dt);
-void EulerSymplectique(Univers& univers, double dt);
-void Leapfrog(Univers& univers, double dt);
+void pasEuler(Univers& univers, double dt);
+void pasEulerSymplectique(Univers& univers, double dt);
+void pasLeapfrog(Univers& univers, double dt);
 
 double energieTotale(const Univers& univers);
