@@ -24,13 +24,13 @@ int main() {
     verifier(egal(univers.vitesses.size(), 2), "taille tableau vitesses", echecs);
     verifier(egal(univers.accelerations.size(), 2), "taille tableau accelerations", echecs);
 
-    if (univers.masses[1] != 1) ++echecs;
-    if (univers.positions[1] != Vector3Double(2,3,4)) ++echecs;
-    if (univers.vitesses[1] != Vector3Double(5,6,7)) ++echecs;
+    if (univers.masses[0] != 1) ++echecs;
+    verifier(egal(univers.positions[0], Vector3Double(2,3,4)), "valeur position 1", echecs);
+    verifier(egal(univers.vitesses[0], Vector3Double(5,6,7)), "valeur vitesse 1", echecs);
 
-    if (univers.masses[2] != 2) ++echecs;
-    if (univers.positions[2] != Vector3Double(3,4,5)) ++echecs;
-    if (univers.vitesses[2] != Vector3Double(6,7,8)) ++echecs;
+    if (univers.masses[1] != 2) ++echecs;
+    verifier(egal(univers.positions[1], Vector3Double(3,4,5)), "valeur position 2", echecs);
+    verifier(egal(univers.vitesses[1], Vector3Double(6,7,8)), "valeur vitesse 2", echecs);
 
     if (echecs == 0) std::cout << "Tous les tests passent\n";
     return echecs;
