@@ -2,7 +2,7 @@
 #include <cmath>
 
 #include "Outils_test.hpp"
-#include "Physique.hpp"
+#include "physique.hpp"
 
 // Type "pointeur de fonction" : une variable qui contient une fonction.
 // Ça permet d'écrire un seul test et de le lancer avec chacun des intégrateurs.
@@ -33,7 +33,7 @@ Univers creerSystemeTroisCorps() {
 // Fait avancer l'univers de nombrePas avec l'intégrateur donné.
 // calculAccelerations est appelé une fois avant : c'est la condition du leapfrog
 // (inutile mais sans danger pour les deux Euler).
-void simuler(Univers& univers, FonctionPas pas, double dt, int nombrePas) {
+void pasSimulation(Univers& univers, FonctionPas pas, double dt, int nombrePas) {
     calculAccelerations(univers);
     for (int numeroPas = 0; numeroPas < nombrePas; ++numeroPas) {
         pas(univers, dt);
@@ -60,7 +60,7 @@ double deriveEnergieMaximale(FonctionPas pas, double dt, int nombrePas) {
 Vector3Double positionFinalePlanete(FonctionPas pas, double dt, double duree) {
     Univers univers = creerSystemeEtoilePlanete(0.8);
     const int nombrePas = static_cast<int>(std::lround(duree / dt));
-    simuler(univers, pas, dt, nombrePas);
+    pasSimulation(univers, pas, dt, nombrePas);
     return univers.positions[1];
 }
 
@@ -75,7 +75,7 @@ int main() {
         const FonctionPas integrateurs[] = { pasEuler, pasEulerSymplectique, pasLeapfrog };
         for (FonctionPas pas : integrateurs) {
             Univers univers = creerSystemeTroisCorps();
-            simuler(univers, pas, 0.01, 10);
+            pasSimulation(univers, pas, 0.01, 10);
             verifier(egal(univers.temps, 0.1), "temps : 10 pas de 0.01 donnent 0.1", echecs);
         }
     }
@@ -110,7 +110,7 @@ int main() {
         const double dt = 2.0 * PI / pasParOrbite;
 
         Univers univers = creerSystemeEtoilePlanete(1.0);
-        simuler(univers, pasLeapfrog, dt, pasParOrbite);
+        pasSimulation(univers, pasLeapfrog, dt, pasParOrbite);
         verifier(proche(univers.positions[1], Vector3Double(1, 0, 0), 1e-3), "kepler : retour au depart apres une periode", echecs);
 
         bool rayonConstant = true;
@@ -166,8 +166,8 @@ int main() {
         Univers univers = creerSystemeTroisCorps();
         const Univers etatInitial = univers;   // copie complète de l'univers
 
-        simuler(univers, pasLeapfrog,  0.001, 500);
-        simuler(univers, pasLeapfrog, -0.001, 500);
+        pasSimulation(univers, pasLeapfrog,  0.001, 500);
+        pasSimulation(univers, pasLeapfrog, -0.001, 500);
 
         bool retourAuDepart = true;
         for (std::size_t indiceCorps = 0; indiceCorps < univers.taille(); ++indiceCorps) {
@@ -195,7 +195,7 @@ int main() {
         };
 
         const Vector3Double quantiteInitiale = quantiteDeMouvementTotale(univers);
-        simuler(univers, pasLeapfrog, 0.001, 1000);
+        pasSimulation(univers, pasLeapfrog, 0.001, 1000);
 
         verifier(proche(quantiteDeMouvementTotale(univers), quantiteInitiale, 1e-12), "quantite de mouvement conservee", echecs);
     }
