@@ -28,3 +28,52 @@ void calculAccelerations(Univers& univers) {
         }
     }
 }
+
+void Euler(Univers& univers, double dt) {
+    calculAccelerations(univers);
+
+    for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
+        univers.positions[iCorps] += univers.vitesses[iCorps] * dt;
+        univers.vitesses[iCorps]  += univers.accelerations[iCorps] * dt;
+        
+        // On avance le temps de simulation
+        univers.temps += dt;
+    }    
+}
+
+void EulerSymplectique(Univers& univers, double dt) {
+    calculAccelerations(univers);
+
+    for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
+        univers.vitesses[iCorps]  += univers.accelerations[iCorps] * dt;
+        univers.positions[iCorps] += univers.vitesses[iCorps] * dt;
+        
+        // On avance le temps de simulation
+        univers.temps += dt;
+    }   
+}
+
+void Leapfrog(Univers& univers, double dt) {
+    calculAccelerations(univers);
+
+    // Premier pas de l'intégrateur
+    for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
+        univers.vitesses[iCorps]  += univers.accelerations[iCorps] * (dt / 2); // kick
+        univers.positions[iCorps] += univers.vitesses[iCorps] * dt; // drift
+    }
+
+    // Calcul des nouvelles accélérations aux nouvelles positions
+    calculAccelerations(univers);
+
+    // Deuxième pas de l'intégrateur
+    for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
+        univers.vitesses[iCorps] += univers.accelerations[iCorps] * (dt / 2); // kick
+
+        // On avance le temps de simulation
+        univers.temps += dt;
+    }
+}
+
+double energieTotale(const Univers& univers) {
+
+}
