@@ -1,5 +1,7 @@
+// Lancement : ./build/nbody
+
 #include "raylib.h"
-#include "Physique.hpp"
+#include "physique.hpp"
 
 // Convertit une position de la simulation (double, unités physiques)
 // en position à l'écran (float, pixels), en vue de dessus (plan x, y)

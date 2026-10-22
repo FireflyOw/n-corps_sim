@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <cmath>
 
-#include "Physique.hpp"
+#include "physique.hpp"
 
 using FonctionPas = void (*)(Univers&, double);
 

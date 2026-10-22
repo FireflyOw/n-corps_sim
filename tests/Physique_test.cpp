@@ -2,7 +2,7 @@
 #include <cmath>
 
 #include "Outils_test.hpp"
-#include "Physique.hpp"
+#include "physique.hpp"
 
 // Vrai si aucune composante n'est infinie ou NaN (résultat d'une division par zéro)
 bool estFini(const Vector3Double& vecteur) {
