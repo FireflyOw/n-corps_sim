@@ -22,7 +22,6 @@ int main() {
     verifier(egal(vectoriel(Vector3Double(1, 0, 0), Vector3Double(0, 1, 0)), Vector3Double(0, 0, 1)), "vectoriel (1,0,0)(0,1,0)", echecs);
     verifier(egal(vectoriel(Vector3Double(0, 1, 0), Vector3Double(1, 0, 0)), Vector3Double(0, 0, -1)), "vectoriel (0,1,0)(1,0,0)", echecs);
 
-
     if (echecs == 0) std::cout << "Tous les tests passent\n";
     return echecs;
 }
