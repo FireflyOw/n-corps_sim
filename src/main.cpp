@@ -19,6 +19,7 @@ int main() {
 
     const Vector2 centreEcran = { largeur / 2.0f, hauteur / 2.0f };
 
+    SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     InitWindow(largeur, hauteur, "Simulation N-Corps");
     SetTargetFPS(60);
 
@@ -33,7 +34,7 @@ int main() {
 
     for (const Corps& c : listeCorps) univers.ajouter(c);
 
-    double dt = 0.001;
+    const double dt = 0.001;
     const float scale = 200; // en (pixel / unité)
     std::size_t pasImage = 10;
 
