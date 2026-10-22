@@ -9,6 +9,8 @@ class Vector3Double {
         double y;
         double z;
 
+        Vector3Double() : x(0), y(0), z(0) {}
+
         Vector3Double(double x, double y, double z) : x(x), y(y), z(z) {}
         
         Vector3Double operator+(const Vector3Double& vec) const {
@@ -53,5 +55,5 @@ inline double scalaire(const Vector3Double& vecA, const Vector3Double& vecB) {
 }
 
 inline Vector3Double vectoriel(const Vector3Double& vecA, const Vector3Double& vecB) {
-    return Vector3Double(vecA.y * vecB.z - vecA.z * vecB.y, vecA.z * vecB.x - vecA.x * vecB .z, vecA.x * vecB.y - vecA.y * vecB.x);
+    return Vector3Double(vecA.y * vecB.z - vecA.z * vecB.y, vecA.z * vecB.x - vecA.x * vecB.z, vecA.x * vecB.y - vecA.y * vecB.x);
 }
