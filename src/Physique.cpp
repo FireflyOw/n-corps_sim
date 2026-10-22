@@ -2,15 +2,15 @@
 
 #include <cmath>
 
-void calculAcceleration(Univers& univers) {
+void calculAccelerations(Univers& univers) {
     const std::size_t nbCorps = univers.taille();
 
-    for (Vector3Double accel : univers.accelerations) accel = Vector3Double();
+    for (Vector3Double& accel : univers.accelerations) accel = Vector3Double();
 
     // Boucles décalées pour calculer l'accélération de chaque 
     // corps par rapport à tous les autres en évitant les doublons 
-    for (int iCorps = 0; iCorps < nbCorps; ++iCorps) {
-        for (int iAutre = iCorps + 1; iAutre < nbCorps; ++iAutre) {
+    for (std::size_t iCorps = 0; iCorps < nbCorps; ++iCorps) {
+        for (std::size_t iAutre = iCorps + 1; iAutre < nbCorps; ++iAutre) {
 
             // Calcul du vecteur allant de Corps vers Autre et de la distance² (pour 
             // économiser une racine carrée) adoucie par un facteur epsilon entre les deux
