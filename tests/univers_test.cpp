@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "Univers.hpp"
-#include "Outils_test.hpp"
+#include "univers.hpp"
+#include "outils_test.hpp"
 #include "Vector3Double.hpp"
 
 Univers univers;

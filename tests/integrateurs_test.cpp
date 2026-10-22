@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "Outils_test.hpp"
+#include "outils_test.hpp"
 #include "physique.hpp"
 
 // Type "pointeur de fonction" : une variable qui contient une fonction.

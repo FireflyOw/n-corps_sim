@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "Outils_test.hpp"
+#include "outils_test.hpp"
 #include "physique.hpp"
 
 // Vrai si aucune composante n'est infinie ou NaN (résultat d'une division par zéro)

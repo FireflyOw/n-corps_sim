@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cmath>
+
 #include "Vector3Double.hpp"
 
 inline void verifier(bool condition, const char* nom, int& echecs) {
