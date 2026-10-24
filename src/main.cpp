@@ -27,7 +27,9 @@ int main() {
     InitWindow(largeur, hauteur, "Simulation N-Corps");
     SetTargetFPS(60);
 
-    Font googleSans = LoadFontEx("resources/fonts/Google_Sans/static/GoogleSans-VariableFont_GRAD,opsz,wght.ttf", 32, 0, 0);
+    const float fontSize = 21.0f;
+    Font googleSans = LoadFontEx("ressources/fonts/Google_Sans/GoogleSans-Regular.ttf", fontSize, 0, 0);
+    SetTextureFilter(googleSans.texture, TEXTURE_FILTER_POINT);
 
     // ---------------------------------------------------------------------
     //                         Réglages de l'univers
@@ -55,6 +57,7 @@ int main() {
     while(!WindowShouldClose()) {
         auto frameStart = std::chrono::steady_clock::now();
 
+        // -------------------------- Bloc physique --------------------------
         for (std::size_t i = 0; i < pasImage; ++i) {
             pasLeapfrog(univers, dt);
         }
@@ -64,6 +67,7 @@ int main() {
         // Calcul de l'erreur relative d'énergie du système pa rapport au départ
         double erreurEnergie = (energieDepart - eTotale) / energieDepart;
 
+        // -------------------------- Bloc affichage --------------------------
         BeginDrawing();
         ClearBackground(BLACK);
 
@@ -73,20 +77,21 @@ int main() {
             DrawCircleV(positionEcran, 5, WHITE);
         }
 
-        // Affichages d'infos (temps de sim., énergie totale, erreur, etc...)
-        DrawText(TextFormat("temps = %.2f", univers.temps),  10, 50, 15, WHITE);
-        DrawText(TextFormat("e_totale = %.2e J", eTotale),   10, 65, 15, WHITE);
-        DrawText(TextFormat("Erreur = %.2e", erreurEnergie), 10, 80, 15, WHITE);
+        // Affichages d'infos (temps de sim., énergie totale, etc...)
+        DrawTextEx(googleSans, TextFormat("temps = %.2f", univers.temps),  {10, 50},                fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", eTotale),   {10, 50 + fontSize},     fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie), {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
 
         DrawFPS(10, 10);
 
         auto frameEnd  = std::chrono::steady_clock::now();
         auto frametime = std::chrono::duration<float, std::milli>(frameEnd - frameStart);
 
-        DrawText(TextFormat("Frametime = %.2f ms", frametime.count()), 10, 95, 15, WHITE);
+        DrawTextEx(googleSans, TextFormat("Frametime = %.2f ms", frametime.count()), {10, 50 + 3 * fontSize}, fontSize, 2, WHITE);
 
         EndDrawing();
     }
 
     CloseWindow();
+    UnloadFont(googleSans);
 }
