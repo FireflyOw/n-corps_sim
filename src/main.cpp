@@ -29,8 +29,12 @@ int main() {
     InitWindow(largeur, hauteur, "Simulation N-Corps");
     SetTargetFPS(60);
 
+    Vector2 facteurEchelle = GetWindowScaleDPI();
+    
     const float fontSize = 21.0f;
-    Font googleSans = LoadFontEx("resources/fonts/Google_Sans/GoogleSans-Regular.ttf", fontSize, 0, 0);
+    int echelleTexte = std::round(static_cast<int>(fontSize * facteurEchelle.x));
+
+    Font googleSans = LoadFontEx("resources/fonts/Google_Sans/GoogleSans-Regular.ttf", echelleTexte, 0, 0);
     SetTextureFilter(googleSans.texture, TEXTURE_FILTER_POINT);
 
     // ---------------------------------------------------------------------
@@ -66,7 +70,7 @@ int main() {
 
         double eTotale = energieTotale(univers); // valeur d'énergie totale du système
 
-        // Calcul de l'erreur relative d'énergie du système pa rapport au départ
+        // Calcul de l'erreur relative d'énergie du système par rapport au départ
         double erreurEnergie = (energieDepart - eTotale) / energieDepart;
 
         // -------------------------- Bloc affichage --------------------------
@@ -86,6 +90,7 @@ int main() {
 
         DrawFPS(10, 10);
 
+        // Calcul du frametime (temps pour créer une image)
         auto frameEnd  = std::chrono::steady_clock::now();
         auto frametime = std::chrono::duration<float, std::milli>(frameEnd - frameStart);
 
