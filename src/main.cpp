@@ -31,8 +31,8 @@ int main() {
 
     Vector2 facteurEchelle = GetWindowScaleDPI();
     
-    const float fontSize = 21.0f;
-    int echelleTexte = std::round(static_cast<int>(fontSize * facteurEchelle.x));
+    const float fontSize = 21.0f / facteurEchelle.x;
+    int echelleTexte = static_cast<int>(std::round(fontSize * facteurEchelle.x));
 
     Font googleSans = LoadFontEx("resources/fonts/Google_Sans/GoogleSans-Regular.ttf", echelleTexte, 0, 0);
     SetTextureFilter(googleSans.texture, TEXTURE_FILTER_POINT);
