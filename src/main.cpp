@@ -38,22 +38,32 @@ int main() {
     const float scale = 200; // en (pixel / unité)
     std::size_t pasImage = 10;
 
-    calculAccelerations(univers);
+    double energieDepart = energieTotale(univers);
 
     // ------------------- Boucle principale -------------------
 
     while(!WindowShouldClose()) {
         for (std::size_t i = 0; i < pasImage; ++i) {
-            pasLeapfrog(univers, dt);
+            pasEuler(univers, dt);
         }
+
+        double eTotale = energieTotale(univers); // valeur d'énergie totale du système
+
+        // Calcul de l'erreur relative d'énergie du système pa rapport au départ
+        double erreurEnergie = (energieDepart - eTotale) / energieDepart;
 
         BeginDrawing();
         ClearBackground(BLACK);
 
+        // Dessin d'un cercle blanc pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
             Vector2 positionEcran = versEcran(univers.positions[iCorps], scale, centreEcran);
             DrawCircleV(positionEcran, 5, WHITE);
         }
+
+        DrawText(TextFormat("temps = %.2f", univers.temps),  10, 50, 15, WHITE);
+        DrawText(TextFormat("e_totale = %.2f J", eTotale),   10, 65, 15, WHITE);
+        DrawText(TextFormat("Erreur = %.3f", erreurEnergie), 10, 80, 15, WHITE);
 
         DrawFPS(10, 10);
         EndDrawing();
