@@ -3,6 +3,8 @@
 #include "raylib.h"
 #include "physique.hpp"
 
+#include <chrono>
+
 // Convertit une position de la simulation (double, unités physiques)
 // en position à l'écran (float, pixels), en vue de dessus (plan x, y)
 Vector2 versEcran(const Vector3Double& positionSimulation, float pixelsParUnite, Vector2 centreEcran) {
@@ -13,7 +15,9 @@ Vector2 versEcran(const Vector3Double& positionSimulation, float pixelsParUnite,
 }
 
 int main() {
-    // ----------------- Réglages de la fenêtre -----------------
+    // ---------------------------------------------------------------------
+    //                     Réglages de la fenêtre raylib 
+    // ---------------------------------------------------------------------
     const int largeur = 800;
     const int hauteur = 600;
 
@@ -23,8 +27,11 @@ int main() {
     InitWindow(largeur, hauteur, "Simulation N-Corps");
     SetTargetFPS(60);
 
-    // ----------------- Réglages de l'univers -----------------
+    Font googleSans = LoadFontEx("resources/fonts/Google_Sans/static/GoogleSans-VariableFont_GRAD,opsz,wght.ttf", 32, 0, 0);
 
+    // ---------------------------------------------------------------------
+    //                         Réglages de l'univers
+    // ---------------------------------------------------------------------
     Univers univers;
 
     std::vector<Corps> listeCorps = {
@@ -38,13 +45,18 @@ int main() {
     const float scale = 200; // en (pixel / unité)
     std::size_t pasImage = 10;
 
+    calculAccelerations(univers);
     double energieDepart = energieTotale(univers);
 
-    // ------------------- Boucle principale -------------------
+    // ---------------------------------------------------------------------
+    //                          Boucle principale
+    // ---------------------------------------------------------------------
 
     while(!WindowShouldClose()) {
+        auto frameStart = std::chrono::steady_clock::now();
+
         for (std::size_t i = 0; i < pasImage; ++i) {
-            pasEuler(univers, dt);
+            pasLeapfrog(univers, dt);
         }
 
         double eTotale = energieTotale(univers); // valeur d'énergie totale du système
@@ -61,11 +73,18 @@ int main() {
             DrawCircleV(positionEcran, 5, WHITE);
         }
 
+        // Affichages d'infos (temps de sim., énergie totale, erreur, etc...)
         DrawText(TextFormat("temps = %.2f", univers.temps),  10, 50, 15, WHITE);
-        DrawText(TextFormat("e_totale = %.2f J", eTotale),   10, 65, 15, WHITE);
-        DrawText(TextFormat("Erreur = %.3f", erreurEnergie), 10, 80, 15, WHITE);
+        DrawText(TextFormat("e_totale = %.2e J", eTotale),   10, 65, 15, WHITE);
+        DrawText(TextFormat("Erreur = %.2e", erreurEnergie), 10, 80, 15, WHITE);
 
         DrawFPS(10, 10);
+
+        auto frameEnd  = std::chrono::steady_clock::now();
+        auto frametime = std::chrono::duration<float, std::milli>(frameEnd - frameStart);
+
+        DrawText(TextFormat("Frametime = %.2f ms", frametime.count()), 10, 95, 15, WHITE);
+
         EndDrawing();
     }
 
