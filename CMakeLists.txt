@@ -85,10 +85,10 @@ function(ajouter_test nom fichier)
     add_test(NAME ${nom} COMMAND ${nom})
 endfunction()
 
-ajouter_test(Vec3D_test        tests/Vec3D_test.cpp)
-ajouter_test(Univers_test      tests/Univers_test.cpp)
-ajouter_test(Physique_test     tests/Physique_test.cpp)
-ajouter_test(Integrateurs_test tests/Integrateurs_test.cpp)
+ajouter_test(vec3D_test        tests/vec3D_test.cpp)
+ajouter_test(univers_test      tests/univers_test.cpp)
+ajouter_test(physique_test     tests/physique_test.cpp)
+ajouter_test(integrateurs_test tests/integrateurs_test.cpp)
 
 # --- Programmes d'exemple ------------------------------------------------
 add_executable(comp_integrateurs exemples/comp_integrateurs.cpp)
