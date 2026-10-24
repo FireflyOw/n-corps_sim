@@ -1,4 +1,6 @@
+// --------------------------
 // Lancement : ./build/nbody
+// --------------------------
 
 #include "raylib.h"
 #include "physique.hpp"
@@ -28,7 +30,7 @@ int main() {
     SetTargetFPS(60);
 
     const float fontSize = 21.0f;
-    Font googleSans = LoadFontEx("ressources/fonts/Google_Sans/GoogleSans-Regular.ttf", fontSize, 0, 0);
+    Font googleSans = LoadFontEx("resources/fonts/Google_Sans/GoogleSans-Regular.ttf", fontSize, 0, 0);
     SetTextureFilter(googleSans.texture, TEXTURE_FILTER_POINT);
 
     // ---------------------------------------------------------------------
@@ -37,7 +39,7 @@ int main() {
     Univers univers;
 
     std::vector<Corps> listeCorps = {
-        Corps(1, Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)),
+        Corps(1,     Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)),
         Corps(1e-10, Vector3Double(1, 0, 0), Vector3Double(0, 1, 0))
     };
 
