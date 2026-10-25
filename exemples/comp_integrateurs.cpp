@@ -14,8 +14,8 @@ using FonctionPas = void (*)(Univers&, double);
 
 Univers creerSystemeEtoilePlanete() {
     Univers univers;
-    univers.ajouter(Corps(1.0,   Vector3Double(0, 0, 0), Vector3Double(0, 0,   0)));  // étoile
-    univers.ajouter(Corps(1e-10, Vector3Double(1, 0, 0), Vector3Double(0, 0.8, 0)));  // planète
+    univers.ajouter(Corps(1.0,   5, Vector3Double(0, 0, 0), Vector3Double(0, 0,   0)));  // étoile
+    univers.ajouter(Corps(1e-10, 5, Vector3Double(1, 0, 0), Vector3Double(0, 0.8, 0)));  // planète
     return univers;
 }
 
