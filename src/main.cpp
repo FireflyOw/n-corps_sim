@@ -3,6 +3,7 @@
 // --------------------------
 
 #include "raylib.h"
+#include "unites.hpp"
 #include "physique.hpp"
 
 #include <chrono>
@@ -42,14 +43,16 @@ int main() {
     // ---------------------------------------------------------------------
     Univers univers;
 
+    Unites unites = {constantes::uniteAstronomique_m, constantes::masseSolaire_kg};
+
     std::vector<Corps> listeCorps = {
-        Corps(1,     5,  Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)),
-        Corps(1e-10, 15, Vector3Double(1, 0, 0), Vector3Double(0, 1, 0))
+        Corps(          1.0,      15,      Vector3Double(0, 0, 0),        Vector3Double(0, 0, 0)),     // étoile
+        corpsSI(unites, 5.972e24, 6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
     };
 
     for (const Corps& c : listeCorps) univers.ajouter(c);
 
-    const double dt = 0.001;
+    const double dt = unites.versTemps(3600.0); // en secondes
     const float scale = 200; // en (pixel / unité)
     std::size_t pasImage = 10;
 
@@ -83,10 +86,13 @@ int main() {
             DrawCircleV(positionEcran, 5, WHITE);
         }
 
+        double energieReel = eTotale * unites.energie_J();
+        double tempsReel   = unites.versSecondes(univers.temps) / constantes::secondesParJour;
+
         // Affichages d'infos (temps de sim., énergie totale, etc...)
-        DrawTextEx(googleSans, TextFormat("temps = %.2f", univers.temps),  {10, 50},                fontSize, 2, WHITE);
-        DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", eTotale),   {10, 50 + fontSize},     fontSize, 2, WHITE);
-        DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie), {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsReel),  {10, 50},                fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", energieReel), {10, 50 + fontSize},     fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie),   {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
 
         DrawFPS(10, 10);
 
@@ -99,6 +105,6 @@ int main() {
         EndDrawing();
     }
 
-    CloseWindow();
     UnloadFont(googleSans);
+    CloseWindow();
 }
