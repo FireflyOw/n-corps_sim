@@ -46,8 +46,8 @@ int main() {
     Unites unites = {constantes::uniteAstronomique_m, constantes::masseSolaire_kg};
 
     std::vector<Corps> listeCorps = {
-        Corps(          1.0,      15,      Vector3Double(0, 0, 0),        Vector3Double(0, 0, 0)),     // étoile
-        corpsSI(unites, 5.972e24, 6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
+        corpsSI(unites, 1.9885e30, 6.957e8, Vector3Double(0, 0, 0),        Vector3Double(0, 0, 0)),     // étoile
+        corpsSI(unites, 5.972e24,  6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
     };
 
     for (const Corps& c : listeCorps) univers.ajouter(c);
@@ -60,8 +60,15 @@ int main() {
     double energieDepart = energieTotale(univers);
 
     // ---------------------------------------------------------------------
+    //                       Réglages de la simulation
+    // ---------------------------------------------------------------------
+    bool rayonTest = true;
+
+    // ---------------------------------------------------------------------
     //                          Boucle principale
     // ---------------------------------------------------------------------
+
+    auto debutSim = std::chrono::steady_clock::now();
 
     while(!WindowShouldClose()) {
         auto frameStart = std::chrono::steady_clock::now();
@@ -83,16 +90,23 @@ int main() {
         // Dessin d'un cercle blanc pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
             Vector2 positionEcran = versEcran(univers.positions[iCorps], scale, centreEcran);
-            DrawCircleV(positionEcran, 5, WHITE);
+
+            if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
+            else DrawCircleV(positionEcran, univers.rayons[iCorps] * scale, WHITE);
         }
 
         double energieReel = eTotale * unites.energie_J();
-        double tempsReel   = unites.versSecondes(univers.temps) / constantes::secondesParJour;
+        double tempsSim   = unites.versSecondes(univers.temps) / constantes::secondesParJour;
+
+        auto tempsActuel = std::chrono::steady_clock::now();
+        auto tempsTotal = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
 
         // Affichages d'infos (temps de sim., énergie totale, etc...)
-        DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsReel),  {10, 50},                fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsSim),  {10, 50},                fontSize, 2, WHITE);
         DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", energieReel), {10, 50 + fontSize},     fontSize, 2, WHITE);
         DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie),   {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
+
+        DrawTextEx(googleSans, TextFormat("%.2f", tempsTotal.count() / 1000),   {750, 10}, fontSize, 2, WHITE);
 
         DrawFPS(10, 10);
 
