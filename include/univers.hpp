@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "unites.hpp"
 #include "vector3double.hpp"
 
 struct Corps { 
@@ -10,6 +11,15 @@ struct Corps {
     Corps(double masse, double rayon, Vector3Double position, Vector3Double vitesse) :
         masse(masse), rayon(rayon), position(position), vitesse(vitesse) {}
 };
+
+// Fonction pour créer un corps avec des infos en unités SI
+inline Corps corpsSI(const Unites& unites, double masse_kg, double rayon_m,
+                    Vector3Double position_m, Vector3Double vitesse_ms) {
+
+    return Corps(unites.versMasse(masse_kg), unites.versLongueur(rayon_m),
+                 Vector3Double(unites.versLongueur(position_m.x), unites.versLongueur(position_m.y), unites.versLongueur(position_m.z)),
+                 Vector3Double(vitesse_ms.x / unites.vitesse_ms(), vitesse_ms.y / unites.vitesse_ms(), vitesse_ms.z / unites.vitesse_ms()));
+}
 
 struct Univers {
     // On crée un tableau pour chaque info pour que chaque fonction puisse 
