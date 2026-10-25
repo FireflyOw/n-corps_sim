@@ -2,6 +2,14 @@
 
 #include <cmath>
 
+namespace constantes {
+    constexpr double uniteAstronomique_m = 1.495978707e11;
+    constexpr double masseSolaire_kg     = 1.98847e30;
+    constexpr double kiloparsec_m        = 3.0856775814913673e19;
+    constexpr double secondesParJour     = 86400.0;
+    constexpr double secondesParAn       = 365.25 * 86400.0;
+}
+
 // ---------------------------------------------------------------------------------------------------
 // Références système (equivalent en unités SI d'une unité interne)
 // ex : 1 unité de longueur = x mètres | 1 unité de temps = y secondes
