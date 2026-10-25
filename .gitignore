@@ -38,3 +38,6 @@ output/
 snapshots/
 *.ppm
 *.mp4
+
+# Autres dossiers/fichiers
+gitToken.txt
