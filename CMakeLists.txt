@@ -73,7 +73,7 @@ add_library(sim STATIC
 target_include_directories(sim PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(sim PUBLIC cxx_std_17)
 
-# --- Tests ---------------------------------------------------------------
+# --- Tests (lancement : ctest --test-dir build) ---------------------------------------------------------------
 enable_testing()
 
 # Petite fonction CMake pour éviter de répéter les mêmes 4 lignes par test.
@@ -86,6 +86,7 @@ function(ajouter_test nom fichier)
 endfunction()
 
 ajouter_test(vec3D_test        tests/vec3D_test.cpp)
+ajouter_test(unites_test       tests/unites_test.cpp)
 ajouter_test(univers_test      tests/univers_test.cpp)
 ajouter_test(physique_test     tests/physique_test.cpp)
 ajouter_test(integrateurs_test tests/integrateurs_test.cpp)
