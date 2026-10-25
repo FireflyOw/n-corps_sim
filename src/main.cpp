@@ -59,13 +59,17 @@ int main() {
     std::size_t pasImage = 10;
 
     calculAccelerations(univers);
-    double energieDepart = energieTotale(univers);
 
     // ---------------------------------------------------------------------
     //                       Réglages de la simulation
     // ---------------------------------------------------------------------
     bool rayonTest = true;
     bool simPause = false;
+
+    double energieDepart = energieTotale(univers);
+
+    double eTotale       = energieDepart;
+    double erreurEnergie = (energieDepart - eTotale) / energieDepart;
 
     // ---------------------------------------------------------------------
     //                          Boucle principale
@@ -80,43 +84,44 @@ int main() {
             simPause = !simPause;
         }
 
-        if (!simPause) {   
-            // -------------------------- Bloc physique --------------------------
+        // -------------------------- Bloc physique --------------------------
+        if (!simPause) {    
             for (std::size_t i = 0; i < pasImage; ++i) {
                 pasLeapfrog(univers, dt);
             }
 
             // Calcul de l'erreur relative d'énergie du système par rapport au départ
-            double eTotale = energieTotale(univers); // valeur d'énergie totale du système
-            double erreurEnergie = (energieDepart - eTotale) / energieDepart;
-
-            // -------------------------- Bloc affichage --------------------------
-            BeginDrawing();
-            ClearBackground(BLACK);
-
-            // Dessin d'un cercle blanc pour chaque corps de la liste
-            for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
-                Vector2 positionEcran = versEcran(univers.positions[iCorps], scale, centreEcran);
-
-                if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
-                else DrawCircleV(positionEcran, univers.rayons[iCorps] * scale, WHITE);
-            }
-
-            double energieReel = eTotale * unites.energie_J();
-            double tempsSim    = unites.versSecondes(univers.temps) / constantes::secondesParJour;
-
-            // Affichages d'infos (temps de sim., énergie totale, etc...)
-            DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsSim),   {10, 50},                fontSize, 2, WHITE);
-            DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", energieReel), {10, 50 + fontSize},     fontSize, 2, WHITE);
-            DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie),   {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
+            eTotale = energieTotale(univers); // valeur d'énergie totale du système
+            erreurEnergie = (energieDepart - eTotale) / energieDepart;
         }
 
-        DrawFPS(10, 10);
+        // -------------------------- Bloc affichage --------------------------
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        if (simPause) DrawTextEx(googleSans, "PAUSED", {370, 10}, fontSize, 2, WHITE);
+
+        // Dessin d'un cercle blanc pour chaque corps de la liste
+        for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
+            Vector2 positionEcran = versEcran(univers.positions[iCorps], scale, centreEcran);
+
+            if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
+            else DrawCircleV(positionEcran, univers.rayons[iCorps] * scale, WHITE);
+        }
+
+        double energieReel = eTotale * unites.energie_J();
+        double tempsSim   = unites.versSecondes(univers.temps) / constantes::secondesParJour;
 
         auto tempsActuel = std::chrono::steady_clock::now();
-        auto tempsTotal  = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
+        auto tempsTotal = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
 
-        DrawTextEx(googleSans, TextFormat("%.2f", tempsTotal.count() / 1000), {750, 10}, fontSize, 2, WHITE);
+        // Affichages d'infos (temps de sim., énergie totale, etc...)
+        DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsSim),    {10, 50},                fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", energieReel),  {10, 50 + fontSize},     fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie),    {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
+        DrawTextEx(googleSans, TextFormat("%.2f", tempsTotal.count() / 1000), {750, 10},               fontSize, 2, WHITE);
+
+        DrawFPS(10, 10);
 
         // Calcul du frametime (temps pour créer une image)
         auto frameEnd  = std::chrono::steady_clock::now();
