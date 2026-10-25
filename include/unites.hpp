@@ -38,22 +38,38 @@ struct Unites {
     // ------------------------------------------------------
     // Fonctions de conversion des unités internes vers SI
     // ------------------------------------------------------
+
+    // Conversion de l'unité interne de longueur vers des mètres
     double versMetres(double longueurInterne) const {
         return longueurInterne * longueur_m;
     }
 
+    // Conversion de l'unité interne de masse vers des kilogrammes
     double versKilogrammes(double masseInterne) const {
         return masseInterne * masse_kg;
     }
     
-    double versMetresSeconde(double vitesseInterne) const {
-        return vitesseInterne * vitesse_ms(temps_s());
+    // Conversion de l'unité interne de temps vers des secondes
+    double versSecondes(double tempsInterne) const {
+        return tempsInterne * temps_s();
     }
 
     // ------------------------------------------------------
     // Fonctions de conversion des unités SI vers interne
     // ------------------------------------------------------
+
+    // Conversion de mètres vers l'unité interne de longueur
     double versLongueur(double longueurInterne) const {
         return longueurInterne / longueur_m;
+    }
+
+    // Conversion de kilogrammes vers l'unité interne de masse
+    double versMasse(double masseInterne) const {
+        return masseInterne / masse_kg;
+    }
+
+    // Conversion de secondes vers l'unité interne de temps
+    double versTemps(double tempsInterne) {
+        return tempsInterne / temps_s();
     }
 };
