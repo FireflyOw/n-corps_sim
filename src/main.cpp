@@ -43,8 +43,8 @@ int main() {
     Univers univers;
 
     std::vector<Corps> listeCorps = {
-        Corps(1,     Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)),
-        Corps(1e-10, Vector3Double(1, 0, 0), Vector3Double(0, 1, 0))
+        Corps(1,     5,  Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)),
+        Corps(1e-10, 15, Vector3Double(1, 0, 0), Vector3Double(0, 1, 0))
     };
 
     for (const Corps& c : listeCorps) univers.ajouter(c);

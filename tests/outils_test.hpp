@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "Vector3Double.hpp"
+#include "vector3double.hpp"
 
 inline void verifier(bool condition, const char* nom, int& echecs) {
     if (!condition) {

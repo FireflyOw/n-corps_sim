@@ -1,22 +1,21 @@
 #pragma once
 
 #include <vector>
-#include "Vector3Double.hpp"
+#include "vector3double.hpp"
 
 struct Corps { 
-    double masse; 
-    
+    double masse, rayon;    
     Vector3Double position, vitesse;
 
-    Corps(double masse, Vector3Double position, Vector3Double vitesse) :
-        masse(masse), position(position), vitesse(vitesse) {}
+    Corps(double masse, double rayon, Vector3Double position, Vector3Double vitesse) :
+        masse(masse), rayon(rayon), position(position), vitesse(vitesse) {}
 };
 
 struct Univers {
     // On crée un tableau pour chaque info pour que chaque fonction puisse 
     // prendre ce dont elle a besoin sans avoir à copier les corps en entier
     std::vector<Vector3Double> positions, vitesses, accelerations;
-    std::vector<double> masses;
+    std::vector<double> masses, rayons;
 
     double G = 1;
     double temps = 0.0;
@@ -27,6 +26,7 @@ struct Univers {
         positions.push_back(corps.position);
         vitesses.push_back(corps.vitesse);
         masses.push_back(corps.masse);
+        rayons.push_back(corps.rayon);
 
         accelerations.push_back(Vector3Double()); // vecteur nul au départ pour l'accélération
     }

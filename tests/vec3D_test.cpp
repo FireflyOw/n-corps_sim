@@ -2,7 +2,7 @@
 #include <cmath>
 
 #include "outils_test.hpp"
-#include "Vector3Double.hpp"
+#include "vector3double.hpp"
 
 static int echecs = 0;
 

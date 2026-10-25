@@ -1,7 +1,7 @@
 #pragma once
 
 #include "univers.hpp"
-#include "Vector3Double.hpp"
+#include "vector3double.hpp"
 
 void calculAccelerations(Univers& univers);
 

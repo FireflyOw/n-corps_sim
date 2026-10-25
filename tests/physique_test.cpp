@@ -18,8 +18,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
 
         calculAccelerations(univers);
 
@@ -32,8 +32,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, Vector3Double(0, 2, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 2, 0), Vector3Double()));
 
         calculAccelerations(univers);
 
@@ -47,8 +47,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));   // léger
-        univers.ajouter(Corps(3, Vector3Double(1, 0, 0), Vector3Double()));   // lourd
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));   // léger
+        univers.ajouter(Corps(3, 5, Vector3Double(1, 0, 0), Vector3Double()));   // lourd
 
         calculAccelerations(univers);
 
@@ -66,10 +66,10 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1.0, Vector3Double( 0.3, -1.2,  0.5), Vector3Double()));
-        univers.ajouter(Corps(2.5, Vector3Double(-0.7,  0.4,  1.1), Vector3Double()));
-        univers.ajouter(Corps(0.8, Vector3Double( 1.5,  0.9, -0.6), Vector3Double()));
-        univers.ajouter(Corps(4.0, Vector3Double(-1.0, -0.5, -1.3), Vector3Double()));
+        univers.ajouter(Corps(1.0, 5, Vector3Double( 0.3, -1.2,  0.5), Vector3Double()));
+        univers.ajouter(Corps(2.5, 5, Vector3Double(-0.7,  0.4,  1.1), Vector3Double()));
+        univers.ajouter(Corps(0.8, 5, Vector3Double( 1.5,  0.9, -0.6), Vector3Double()));
+        univers.ajouter(Corps(4.0, 5, Vector3Double(-1.0, -0.5, -1.3), Vector3Double()));
 
         calculAccelerations(univers);
 
@@ -87,8 +87,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
 
         calculAccelerations(univers);
         const Vector3Double premierResultat = univers.accelerations[0];
@@ -108,8 +108,8 @@ int main() {
     {
         Univers univers;
         univers.epsilon = 0.1;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
 
         calculAccelerations(univers);
 
@@ -119,8 +119,8 @@ int main() {
     {
         Univers univers;
         univers.epsilon = 1.0;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
 
         calculAccelerations(univers);
 
@@ -133,7 +133,7 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(5, Vector3Double(1, 2, 3), Vector3Double()));
+        univers.ajouter(Corps(5, 5, Vector3Double(1, 2, 3), Vector3Double()));
 
         calculAccelerations(univers);
 

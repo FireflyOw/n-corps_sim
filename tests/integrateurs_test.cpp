@@ -16,17 +16,17 @@ const double PI = 3.14159265358979323846;
 //   - vitesseInitiale = 0.8 → orbite elliptique (plus exigeante pour les intégrateurs)
 Univers creerSystemeEtoilePlanete(double vitesseInitiale) {
     Univers univers;
-    univers.ajouter(Corps(1.0,   Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)));                // étoile
-    univers.ajouter(Corps(1e-10, Vector3Double(1, 0, 0), Vector3Double(0, vitesseInitiale, 0)));  // planète
+    univers.ajouter(Corps(1.0,   5, Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)));                // étoile
+    univers.ajouter(Corps(1e-10, 5, Vector3Double(1, 0, 0), Vector3Double(0, vitesseInitiale, 0)));  // planète
     return univers;
 }
 
 // Trois corps de masses comparables, positions et vitesses quelconques
 Univers creerSystemeTroisCorps() {
     Univers univers;
-    univers.ajouter(Corps(1.0, Vector3Double( 0.0, 0.0, 0.0), Vector3Double( 0.0,  0.1, 0.0)));
-    univers.ajouter(Corps(0.5, Vector3Double( 1.0, 0.0, 0.0), Vector3Double( 0.0,  0.8, 0.1)));
-    univers.ajouter(Corps(0.3, Vector3Double(-0.5, 1.0, 0.2), Vector3Double( 0.3, -0.2, 0.0)));
+    univers.ajouter(Corps(1.0, 5, Vector3Double( 0.0, 0.0, 0.0), Vector3Double( 0.0,  0.1, 0.0)));
+    univers.ajouter(Corps(0.5, 5, Vector3Double( 1.0, 0.0, 0.0), Vector3Double( 0.0,  0.8, 0.1)));
+    univers.ajouter(Corps(0.3, 5, Vector3Double(-0.5, 1.0, 0.2), Vector3Double( 0.3, -0.2, 0.0)));
     return univers;
 }
 
@@ -88,8 +88,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
         verifier(egal(energieTotale(univers), -1.0), "energie : deux masses au repos = -1", echecs);
 
         univers.vitesses[1] = Vector3Double(0, 2, 0);

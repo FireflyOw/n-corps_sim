@@ -3,15 +3,15 @@
 
 #include "univers.hpp"
 #include "outils_test.hpp"
-#include "Vector3Double.hpp"
+#include "vector3double.hpp"
 
 Univers univers;
 
 static int echecs = 0;
 
 std::vector<Corps> listeCorps = {
-    Corps(1, Vector3Double(2,3,4), Vector3Double(5,6,7)),
-    Corps(2, Vector3Double(3,4,5), Vector3Double(6,7,8))
+    Corps(1, 5, Vector3Double(2,3,4), Vector3Double(5,6,7)),
+    Corps(2, 5, Vector3Double(3,4,5), Vector3Double(6,7,8))
 };
 
 int main() {
