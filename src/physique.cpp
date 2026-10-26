@@ -82,9 +82,10 @@ void pasLeapfrog(Univers& univers, double dt) {
 }
 
 // ---------------------------------------------------------------------
-// Fonctions de calcul de l'énergie totale du système (cinétique + potentielle)
+// Fonctions annexes : calcul d'énergie totale et initialisation de l'univers
 // ---------------------------------------------------------------------
 
+// Fonctions de calcul de l'énergie totale du système (cinétique + potentielle)
 double energieTotale(const Univers& univers) {
     const std::size_t nbCorps = univers.taille();
 
@@ -108,4 +109,18 @@ double energieTotale(const Univers& univers) {
 
     // Énergie totale = potentielle + cinétique
     return energieCinetique + energiePotentielle;
+}
+
+// Fonction pour ajouter tous les corps d'une liste dans un univers
+void initUnivers(Univers& univers, std::vector<Corps>& conditionsInitiales) {
+    univers.positions.clear();
+    univers.vitesses.clear();
+    univers.masses.clear();
+    univers.rayons.clear();
+
+    univers.temps = 0;
+
+    for (const Corps& c : conditionsInitiales) univers.ajouter(c); 
+
+    calculAccelerations(univers);
 }
