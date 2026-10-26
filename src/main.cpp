@@ -82,6 +82,8 @@ int main() {
         if (IsKeyPressed(KEY_UP)) pasImage *= 2;
         else if (IsKeyPressed(KEY_DOWN)) pasImage /= 2;
 
+        pasImage = std::clamp(static_cast<int>(pasImage), 1, 100);
+
         if (IsKeyPressed(KEY_SPACE)) simPause = !simPause;
 
         if (IsKeyPressed(KEY_R)) {
