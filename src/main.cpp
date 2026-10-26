@@ -47,12 +47,14 @@ int main() {
 
     Unites unites = {constantes::uniteAstronomique_m, constantes::masseSolaire_kg};
 
-    std::vector<Corps> listeCorps = {
-        corpsSI(unites, 1.9885e30, 6.957e8, Vector3Double(0, 0, 0),        Vector3Double(0, 0, 0)),     // étoile
-        corpsSI(unites, 5.972e24,  6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
+    std::vector<Corps> condInitiales = {
+        corpsSI(unites, constantes::masseSolaire_kg, 6.957e8, Vector3Double(0, 0, 0),        Vector3Double(0, 0, 0)),     // étoile
+        corpsSI(unites, 5.972e24,                    6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
     };
 
-    for (const Corps& c : listeCorps) univers.ajouter(c);
+    std::vector<Corps> listeCorps = condInitiales;
+
+    creerSysteme(univers, condInitiales);
 
     const double dt = unites.versTemps(3600.0); // en secondes
     const float scale = 200; // en (pixel / unité)
@@ -66,8 +68,8 @@ int main() {
     bool rayonTest = true;
     bool simPause = false;
 
+    // Initialisation des valeurs d'énergie
     double energieDepart = energieTotale(univers);
-
     double eTotale       = energieDepart;
     double erreurEnergie = (energieDepart - eTotale) / energieDepart;
 
@@ -80,8 +82,18 @@ int main() {
     while(!WindowShouldClose()) {
         auto frameStart = std::chrono::steady_clock::now();
 
-        if(IsKeyPressed(KEY_SPACE)) {
-            simPause = !simPause;
+        // -------------------------- Bloc contrôles --------------------------
+        if (IsKeyPressed(KEY_UP)) pasImage *= 2;
+        else if (IsKeyPressed(KEY_DOWN)) pasImage /= 2;
+
+        if (IsKeyPressed(KEY_SPACE)) simPause = !simPause;
+
+        if (IsKeyPressed(KEY_R)) {
+            creerSysteme(univers, condInitiales);
+            
+            energieDepart = energieTotale(univers);
+            eTotale       = energieDepart;
+            erreurEnergie = (energieDepart - eTotale) / energieDepart;   
         }
 
         // -------------------------- Bloc physique --------------------------
@@ -99,7 +111,8 @@ int main() {
         BeginDrawing();
         ClearBackground(BLACK);
 
-        if (simPause) DrawTextEx(googleSans, "PAUSED", {370, 10}, fontSize, 2, WHITE);
+        Vector2 largeurPAUSED = MeasureTextEx(googleSans, "PAUSED", fontSize, 2);
+        if (simPause) DrawTextEx(googleSans, "PAUSED", {(largeur / 2) - (largeurPAUSED.x / 2), 10}, fontSize, 2, WHITE);
 
         // Dessin d'un cercle blanc pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
@@ -119,7 +132,9 @@ int main() {
         DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsSim),    {10, 50},                fontSize, 2, WHITE);
         DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", energieReel),  {10, 50 + fontSize},     fontSize, 2, WHITE);
         DrawTextEx(googleSans, TextFormat("Erreur = %.2e", erreurEnergie),    {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
-        DrawTextEx(googleSans, TextFormat("%.2f", tempsTotal.count() / 1000), {750, 10},               fontSize, 2, WHITE);
+
+        Vector2 largeurTempsTotal = MeasureTextEx(googleSans, TextFormat("%.2f s", tempsTotal.count() / 1000), fontSize, 2);
+        DrawTextEx(googleSans, TextFormat("%.2f s", tempsTotal.count() / 1000), {largeur - (largeurTempsTotal.x + 10), 10}, fontSize, 2, WHITE);
 
         DrawFPS(10, 10);
 
