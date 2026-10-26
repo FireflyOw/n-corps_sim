@@ -10,3 +10,4 @@ void pasEulerSymplectique(Univers& univers, double dt);
 void pasLeapfrog(Univers& univers, double dt);
 
 double energieTotale(const Univers& univers);
+void initUnivers(Univers& univers, std::vector<Corps>& conditionsInitiales);
