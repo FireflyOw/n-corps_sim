@@ -52,15 +52,9 @@ int main() {
         corpsSI(unites, 5.972e24,                    6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
     };
 
-    std::vector<Corps> listeCorps = condInitiales;
-
-    creerSysteme(univers, condInitiales);
-
     const double dt = unites.versTemps(3600.0); // en secondes
     const float scale = 200; // en (pixel / unité)
     std::size_t pasImage = 10;
-
-    calculAccelerations(univers);
 
     // ---------------------------------------------------------------------
     //                       Réglages de la simulation
@@ -68,6 +62,8 @@ int main() {
     bool rayonTest = true;
     bool simPause = false;
 
+    initUnivers(univers, condInitiales);
+    
     // Initialisation des valeurs d'énergie
     double energieDepart = energieTotale(univers);
     double eTotale       = energieDepart;
@@ -89,8 +85,8 @@ int main() {
         if (IsKeyPressed(KEY_SPACE)) simPause = !simPause;
 
         if (IsKeyPressed(KEY_R)) {
-            creerSysteme(univers, condInitiales);
-            
+            initUnivers(univers, condInitiales);
+
             energieDepart = energieTotale(univers);
             eTotale       = energieDepart;
             erreurEnergie = (energieDepart - eTotale) / energieDepart;   
