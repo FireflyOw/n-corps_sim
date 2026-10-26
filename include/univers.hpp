@@ -45,8 +45,3 @@ struct Univers {
         return masses.size();
     }
 };
-
-// Fonction pour ajouter tous les corps d'une liste dans un univers
-inline void creerSysteme(Univers univers, std::vector<Corps> conditionsInitiales) {
-    for (const Corps& c : conditionsInitiales) univers.ajouter(c); 
-}
