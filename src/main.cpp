@@ -13,10 +13,10 @@ int main() {
     // ---------------------------------------------------------------------
     //                     Réglages de la fenêtre raylib 
     // ---------------------------------------------------------------------
-    const int largeur = 800;
-    const int hauteur = 600;
+    CameraSim camera;
 
-    const Vector2 centreEcran = { largeur / 2.0f, hauteur / 2.0f };
+    const int largeur = camera.largeur;
+    const int hauteur = camera.hauteur;
 
     SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     InitWindow(largeur, hauteur, "Simulation N-Corps");
@@ -112,7 +112,7 @@ int main() {
 
         // Dessin d'un cercle blanc pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
-            Vector2 positionEcran = versEcran(univers.positions[iCorps], scale, centreEcran);
+            Vector2 positionEcran = camera.versEcran(univers.positions[iCorps], scale, camera.centreEcran);
 
             if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
             else DrawCircleV(positionEcran, univers.rayons[iCorps] * scale, WHITE);
