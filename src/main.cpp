@@ -7,6 +7,7 @@
 #include "physique.hpp"
 
 #include <chrono>
+#include <algorithm>
 
 // Convertit une position de la simulation (double, unités physiques)
 // en position à l'écran (float, pixels), en vue de dessus (plan x, y)
@@ -69,6 +70,9 @@ int main() {
     double eTotale       = energieDepart;
     double erreurEnergie = (energieDepart - eTotale) / energieDepart;
 
+    double energieReel = eTotale * unites.energie_J();
+    double tempsSim    = unites.versSecondes(univers.temps) / constantes::secondesParJour;
+
     // ---------------------------------------------------------------------
     //                          Boucle principale
     // ---------------------------------------------------------------------
@@ -82,7 +86,7 @@ int main() {
         if (IsKeyPressed(KEY_UP)) pasImage *= 2;
         else if (IsKeyPressed(KEY_DOWN)) pasImage /= 2;
 
-        pasImage = std::clamp(static_cast<int>(pasImage), 1, 100);
+        pasImage = std::clamp<std::size_t>(pasImage, 1, 100);
 
         if (IsKeyPressed(KEY_SPACE)) simPause = !simPause;
 
@@ -103,6 +107,9 @@ int main() {
             // Calcul de l'erreur relative d'énergie du système par rapport au départ
             eTotale = energieTotale(univers); // valeur d'énergie totale du système
             erreurEnergie = (energieDepart - eTotale) / energieDepart;
+
+            energieReel = eTotale * unites.energie_J();
+            tempsSim    = unites.versSecondes(univers.temps) / constantes::secondesParJour;
         }
 
         // -------------------------- Bloc affichage --------------------------
@@ -120,9 +127,6 @@ int main() {
             else DrawCircleV(positionEcran, univers.rayons[iCorps] * scale, WHITE);
         }
 
-        double energieReel = eTotale * unites.energie_J();
-        double tempsSim   = unites.versSecondes(univers.temps) / constantes::secondesParJour;
-
         auto tempsActuel = std::chrono::steady_clock::now();
         auto tempsTotal = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
 
@@ -136,7 +140,7 @@ int main() {
 
         DrawFPS(10, 10);
 
-        // Calcul du frametime (temps pour créer une image)
+        // Calcul et affichage du frametime (temps pour créer une image)
         auto frameEnd  = std::chrono::steady_clock::now();
         auto frametime = std::chrono::duration<float, std::milli>(frameEnd - frameStart);
 
