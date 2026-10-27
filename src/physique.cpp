@@ -111,16 +111,10 @@ double energieTotale(const Univers& univers) {
     return energieCinetique + energiePotentielle;
 }
 
-// Fonction pour ajouter tous les corps d'une liste dans un univers
+// Fonction pour réinitialiser un univers avec une nouvelle liste
 void initUnivers(Univers& univers, std::vector<Corps>& conditionsInitiales) {
-    univers.positions.clear();
-    univers.vitesses.clear();
-    univers.masses.clear();
-    univers.rayons.clear();
-
-    univers.temps = 0;
-
-    for (const Corps& c : conditionsInitiales) univers.ajouter(c); 
+    univers.nettoyer();
+    univers.construire(conditionsInitiales); 
 
     calculAccelerations(univers);
 }
