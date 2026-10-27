@@ -40,6 +40,25 @@ struct Univers {
         accelerations.push_back(Vector3Double()); // vecteur nul au départ pour l'accélération
     }
 
+    // Fonction pour retirer les infos d'un corps des tableaux
+    void retirer() {
+        accelerations.clear();
+        positions.clear();
+        vitesses.clear();
+        masses.clear();
+        rayons.clear();
+    }
+
+    void construire(std::vector<Corps>& listeCorps) {
+        for (const Corps& c : listeCorps) ajouter(c);
+    }
+
+    void nettoyer() {
+        retirer();
+
+        temps = 0;
+    }
+
     // Fonction pour connaître le nombre de corps dans l'univers
     std::size_t taille() const {
         return masses.size();
