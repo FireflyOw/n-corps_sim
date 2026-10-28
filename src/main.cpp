@@ -122,7 +122,7 @@ int main() {
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
             Vector2 positionEcran = camera.versEcran(univers.positions[iCorps]);
 
-            double rayonAffiche = std::clamp(univers.rayons[iCorps] * camera.zoom, 5.0, univers.rayons[iCorps] * camera.zoom);
+            double rayonAffiche = std::max(univers.rayons[iCorps] * camera.zoom, 1.0);
 
             if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
             else DrawCircleV(positionEcran, rayonAffiche, WHITE);
