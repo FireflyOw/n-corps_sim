@@ -13,10 +13,11 @@ int main() {
     // ---------------------------------------------------------------------
     //                     Réglages de la fenêtre raylib 
     // ---------------------------------------------------------------------
-    CameraSim camera;
+    const int largeur = 800;
+    const int hauteur = 600;
 
-    const int largeur = camera.largeur;
-    const int hauteur = camera.hauteur;
+    Vector2 centreEcran = { largeur / 2.0f, hauteur / 2.0f };
+    CameraSim camera(centreEcran);
 
     SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     InitWindow(largeur, hauteur, "Simulation N-Corps");
@@ -45,13 +46,12 @@ int main() {
     };
 
     const double dt = unites.versTemps(3600.0); // en secondes
-    const float scale = 200; // en (pixel / unité)
     std::size_t pasImage = 10;
 
     // ---------------------------------------------------------------------
     //                       Réglages de la simulation
     // ---------------------------------------------------------------------
-    bool rayonTest = true;
+    bool rayonTest = false;
     bool simPause = false;
 
     initUnivers(univers, condInitiales);
@@ -74,13 +74,21 @@ int main() {
         auto frameStart = std::chrono::steady_clock::now();
 
         // -------------------------- Bloc contrôles --------------------------
+
+        // Gestion de la vitesse de simulation avec les flèches
         if (IsKeyPressed(KEY_UP)) pasImage *= 2;
         else if (IsKeyPressed(KEY_DOWN)) pasImage /= 2;
 
         pasImage = std::clamp<std::size_t>(pasImage, 1, 100);
 
+        // Gestion du zoom avec la molette
+        camera.zoom *= std::pow(camera.facteurZoom, GetMouseWheelMove());
+        camera.zoom = std::clamp<double>(camera.zoom, 10, 1e7);
+
+        // Gestion de la pause avec Espace
         if (IsKeyPressed(KEY_SPACE)) simPause = !simPause;
 
+        // Réinitialisation de la simulation avec R
         if (IsKeyPressed(KEY_R)) {
             initUnivers(univers, condInitiales);
 
@@ -112,14 +120,16 @@ int main() {
 
         // Dessin d'un cercle blanc pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
-            Vector2 positionEcran = camera.versEcran(univers.positions[iCorps], scale, camera.centreEcran);
+            Vector2 positionEcran = camera.versEcran(univers.positions[iCorps]);
+
+            double rayonAffiche = std::clamp(univers.rayons[iCorps] * camera.zoom, 5.0, univers.rayons[iCorps] * camera.zoom);
 
             if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
-            else DrawCircleV(positionEcran, univers.rayons[iCorps] * scale, WHITE);
+            else DrawCircleV(positionEcran, rayonAffiche, WHITE);
         }
 
         auto tempsActuel = std::chrono::steady_clock::now();
-        auto tempsTotal = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
+        auto tempsTotal  = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
 
         // Affichages d'infos (temps de sim., énergie totale, etc...)
         DrawTextEx(googleSans, TextFormat("temps = %.2f jours", tempsSim),    {10, 50},                fontSize, 2, WHITE);
