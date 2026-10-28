@@ -7,6 +7,7 @@ struct CameraSim {
     Vector2 centreEcran;
     
     double zoom = 200;
+    double facteurZoom = 1.2;
     Vector3Double positionVisee;
 
     CameraSim(Vector2 centreEcran) : centreEcran(centreEcran) {}
