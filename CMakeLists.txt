@@ -69,6 +69,7 @@ endif()
 # ET à tous ceux qui la lient (tests, futur programme).
 add_library(sim STATIC
     src/physique.cpp
+    src/simulation.cpp
 )
 target_include_directories(sim PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(sim PUBLIC cxx_std_17)
