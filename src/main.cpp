@@ -40,9 +40,15 @@ int main() {
 
     Unites unites = {constantes::uniteAstronomique_m, constantes::masseSolaire_kg};
 
+    // Conditions initiales du système solaire
     std::vector<Corps> condInitiales = {
-        corpsSI(unites, constantes::masseSolaire_kg, 6.957e8, double3(0, 0, 0),        double3(0, 0, 0)),     // étoile
-        corpsSI(unites, 5.972e24,                    6.371e6, double3(1.496e11, 0, 0), double3(0, 29785, 0))  // planète
+        corpsSI(unites, constantes::masseSolaire_kg, 6.957e8,  double3(0, 0, 0),         double3(0, 0, 0),     Couleur{1.0f, 1.0f, 0.0f}),           // Soleil
+        corpsSI(unites, 3.301e23,                    2.4397e6, double3(5.791e10, 0, 0),  double3(0, 47872, 0), Couleur{1.0f, 0.5f, 0.5f}),           // Mercure
+        corpsSI(unites, 4.867e24,                    6.0518e6, double3(1.0821e11, 0, 0), double3(0, 35021, 0), Couleur{0.5725f, 0.5216f, 0.5647f}),  // Venus
+        corpsSI(unites, 5.972e24,                    6.371e6,  double3(1.496e11, 0, 0),  double3(0, 29785, 0), Couleur{0.0f, 1.0f, 1.0f}),           // Terre
+        corpsSI(unites, 6.417e23,                    3.3895e6, double3(2.2794e11, 0, 0), double3(0, 24130, 0), Couleur{1.0f, 0.0f, 0.0f}),           // Mars
+
+        corpsSI(unites, 1.898e27,                    6.9911e7, double3(7.7857e11, 0, 0), double3(0, 13056, 0), Couleur{0.6627f, 0.3255f, 0.0941f})   // Jupiter
     };
 
     const double dt = unites.versTemps(3600.0); // en secondes
@@ -127,14 +133,16 @@ int main() {
         Vector2 largeurPAUSED = MeasureTextEx(googleSans, "PAUSED", fontSize, 2);
         if (simPause) DrawTextEx(googleSans, "PAUSED", {(largeur / 2) - (largeurPAUSED.x / 2), 10}, fontSize, 2, WHITE);
 
-        // Dessin d'un cercle blanc pour chaque corps de la liste
+        // Dessin d'un cercle coloré pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
             Vector2 positionEcran = camera.versEcran(univers.positions[iCorps]);
 
+            Vector4 couleurBase = {univers.couleurs[iCorps].r, univers.couleurs[iCorps].g, univers.couleurs[iCorps].b, 1};
+            Color couleur = ColorFromNormalized(couleurBase);
             double rayonAffiche = std::max(univers.rayons[iCorps] * camera.zoom, 1.0);
 
-            if (rayonTest) DrawCircleV(positionEcran, 5, WHITE);
-            else DrawCircleV(positionEcran, rayonAffiche, WHITE);
+            if (rayonTest) DrawCircleV(positionEcran, 5, couleur);
+            else DrawCircleV(positionEcran, rayonAffiche, couleur);
         }
 
         auto tempsActuel = std::chrono::steady_clock::now();
