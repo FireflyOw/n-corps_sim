@@ -88,9 +88,9 @@ endfunction()
 
 ajouter_test(vec3D_test        tests/vec3D_test.cpp)
 ajouter_test(unites_test       tests/unites_test.cpp)
-ajouter_test(simulation_test   tests/simulation_test.cpp)
 ajouter_test(univers_test      tests/univers_test.cpp)
 ajouter_test(physique_test     tests/physique_test.cpp)
+ajouter_test(simulation_test   tests/simulation_test.cpp)
 ajouter_test(integrateurs_test tests/integrateurs_test.cpp)
 
 # --- Programmes d'exemple ------------------------------------------------
