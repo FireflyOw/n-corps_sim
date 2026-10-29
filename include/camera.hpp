@@ -21,7 +21,8 @@ struct CameraSim {
         };
     }
 
-//    Vector2 versSimulation(const Vector3Double& positionEcran, float pixelsParUnite) const {
-//        return Vector2 {0, 0};
-//    }
+    void deplacement(const Vector2& deplacementSouris) {
+        positionVisee.x -= (deplacementSouris.x / zoom);
+        positionVisee.y += (deplacementSouris.y / zoom);
+    }
 };
