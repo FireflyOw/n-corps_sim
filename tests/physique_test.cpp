@@ -5,7 +5,7 @@
 #include "physique.hpp"
 
 // Vrai si aucune composante n'est infinie ou NaN (résultat d'une division par zéro)
-bool estFini(const Vector3Double& vecteur) {
+bool estFini(const double3& vecteur) {
     return std::isfinite(vecteur.x) && std::isfinite(vecteur.y) && std::isfinite(vecteur.z);
 }
 
@@ -18,13 +18,13 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
+        univers.ajouter(Corps(1, 5, double3(1, 0, 0), double3()));
 
         calculAccelerations(univers);
 
-        verifier(egal(univers.accelerations[0], Vector3Double( 1, 0, 0)), "deux corps : corps 0 attire vers +x", echecs);
-        verifier(egal(univers.accelerations[1], Vector3Double(-1, 0, 0)), "deux corps : corps 1 attire vers -x", echecs);
+        verifier(egal(univers.accelerations[0], double3( 1, 0, 0)), "deux corps : corps 0 attire vers +x", echecs);
+        verifier(egal(univers.accelerations[1], double3(-1, 0, 0)), "deux corps : corps 1 attire vers -x", echecs);
     }
 
     // ---------------------------------------------------------------------
@@ -32,8 +32,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 2, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
+        univers.ajouter(Corps(1, 5, double3(0, 2, 0), double3()));
 
         calculAccelerations(univers);
 
@@ -47,8 +47,8 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));   // léger
-        univers.ajouter(Corps(3, 5, Vector3Double(1, 0, 0), Vector3Double()));   // lourd
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));   // léger
+        univers.ajouter(Corps(3, 5, double3(1, 0, 0), double3()));   // lourd
 
         calculAccelerations(univers);
 
@@ -66,19 +66,19 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1.0, 5, Vector3Double( 0.3, -1.2,  0.5), Vector3Double()));
-        univers.ajouter(Corps(2.5, 5, Vector3Double(-0.7,  0.4,  1.1), Vector3Double()));
-        univers.ajouter(Corps(0.8, 5, Vector3Double( 1.5,  0.9, -0.6), Vector3Double()));
-        univers.ajouter(Corps(4.0, 5, Vector3Double(-1.0, -0.5, -1.3), Vector3Double()));
+        univers.ajouter(Corps(1.0, 5, double3( 0.3, -1.2,  0.5), double3()));
+        univers.ajouter(Corps(2.5, 5, double3(-0.7,  0.4,  1.1), double3()));
+        univers.ajouter(Corps(0.8, 5, double3( 1.5,  0.9, -0.6), double3()));
+        univers.ajouter(Corps(4.0, 5, double3(-1.0, -0.5, -1.3), double3()));
 
         calculAccelerations(univers);
 
-        Vector3Double sommeMasseFoisAcceleration;
+        double3 sommeMasseFoisAcceleration;
         for (std::size_t indiceCorps = 0; indiceCorps < univers.taille(); ++indiceCorps) {
             sommeMasseFoisAcceleration += univers.accelerations[indiceCorps] * univers.masses[indiceCorps];
         }
 
-        verifier(egal(sommeMasseFoisAcceleration, Vector3Double()), "quantite de mouvement : somme des m*a nulle", echecs);
+        verifier(egal(sommeMasseFoisAcceleration, double3()), "quantite de mouvement : somme des m*a nulle", echecs);
     }
 
     // ---------------------------------------------------------------------
@@ -87,14 +87,14 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
+        univers.ajouter(Corps(1, 5, double3(1, 0, 0), double3()));
 
         calculAccelerations(univers);
-        const Vector3Double premierResultat = univers.accelerations[0];
+        const double3 premierResultat = univers.accelerations[0];
 
         calculAccelerations(univers);
-        const Vector3Double secondResultat = univers.accelerations[0];
+        const double3 secondResultat = univers.accelerations[0];
 
         verifier(egal(premierResultat, secondResultat), "deux appels successifs : meme resultat", echecs);
     }
@@ -108,19 +108,19 @@ int main() {
     {
         Univers univers;
         univers.epsilon = 0.1;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
 
         calculAccelerations(univers);
 
         verifier(estFini(univers.accelerations[0]), "adoucissement : corps superposes, pas de division par zero", echecs);
-        verifier(egal(univers.accelerations[0], Vector3Double()), "adoucissement : corps superposes, acceleration nulle", echecs);
+        verifier(egal(univers.accelerations[0], double3()), "adoucissement : corps superposes, acceleration nulle", echecs);
     }
     {
         Univers univers;
         univers.epsilon = 1.0;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
+        univers.ajouter(Corps(1, 5, double3(1, 0, 0), double3()));
 
         calculAccelerations(univers);
 
@@ -133,11 +133,11 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(5, 5, Vector3Double(1, 2, 3), Vector3Double()));
+        univers.ajouter(Corps(5, 5, double3(1, 2, 3), double3()));
 
         calculAccelerations(univers);
 
-        verifier(egal(univers.accelerations[0], Vector3Double()), "corps seul : acceleration nulle", echecs);
+        verifier(egal(univers.accelerations[0], double3()), "corps seul : acceleration nulle", echecs);
     }
 
     if (echecs == 0) std::cout << "Tous les tests passent\n";

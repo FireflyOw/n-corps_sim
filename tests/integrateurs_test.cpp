@@ -16,17 +16,17 @@ const double PI = 3.14159265358979323846;
 //   - vitesseInitiale = 0.8 → orbite elliptique (plus exigeante pour les intégrateurs)
 Univers creerSystemeEtoilePlanete(double vitesseInitiale) {
     Univers univers;
-    univers.ajouter(Corps(1.0,   5, Vector3Double(0, 0, 0), Vector3Double(0, 0, 0)));                // étoile
-    univers.ajouter(Corps(1e-10, 5, Vector3Double(1, 0, 0), Vector3Double(0, vitesseInitiale, 0)));  // planète
+    univers.ajouter(Corps(1.0,   5, double3(0, 0, 0), double3(0, 0, 0)));                // étoile
+    univers.ajouter(Corps(1e-10, 5, double3(1, 0, 0), double3(0, vitesseInitiale, 0)));  // planète
     return univers;
 }
 
 // Trois corps de masses comparables, positions et vitesses quelconques
 Univers creerSystemeTroisCorps() {
     Univers univers;
-    univers.ajouter(Corps(1.0, 5, Vector3Double( 0.0, 0.0, 0.0), Vector3Double( 0.0,  0.1, 0.0)));
-    univers.ajouter(Corps(0.5, 5, Vector3Double( 1.0, 0.0, 0.0), Vector3Double( 0.0,  0.8, 0.1)));
-    univers.ajouter(Corps(0.3, 5, Vector3Double(-0.5, 1.0, 0.2), Vector3Double( 0.3, -0.2, 0.0)));
+    univers.ajouter(Corps(1.0, 5, double3( 0.0, 0.0, 0.0), double3( 0.0,  0.1, 0.0)));
+    univers.ajouter(Corps(0.5, 5, double3( 1.0, 0.0, 0.0), double3( 0.0,  0.8, 0.1)));
+    univers.ajouter(Corps(0.3, 5, double3(-0.5, 1.0, 0.2), double3( 0.3, -0.2, 0.0)));
     return univers;
 }
 
@@ -57,7 +57,7 @@ double deriveEnergieMaximale(FonctionPas pas, double dt, int nombrePas) {
 }
 
 // Position de la planète après une durée donnée
-Vector3Double positionFinalePlanete(FonctionPas pas, double dt, double duree) {
+double3 positionFinalePlanete(FonctionPas pas, double dt, double duree) {
     Univers univers = creerSystemeEtoilePlanete(0.8);
     const int nombrePas = static_cast<int>(std::lround(duree / dt));
     pasSimulation(univers, pas, dt, nombrePas);
@@ -88,11 +88,11 @@ int main() {
     // ---------------------------------------------------------------------
     {
         Univers univers;
-        univers.ajouter(Corps(1, 5, Vector3Double(0, 0, 0), Vector3Double()));
-        univers.ajouter(Corps(1, 5, Vector3Double(1, 0, 0), Vector3Double()));
+        univers.ajouter(Corps(1, 5, double3(0, 0, 0), double3()));
+        univers.ajouter(Corps(1, 5, double3(1, 0, 0), double3()));
         verifier(egal(energieTotale(univers), -1.0), "energie : deux masses au repos = -1", echecs);
 
-        univers.vitesses[1] = Vector3Double(0, 2, 0);
+        univers.vitesses[1] = double3(0, 2, 0);
         verifier(egal(energieTotale(univers), 1.0), "energie : avec vitesse 2, E = 2 - 1 = 1", echecs);
 
         Univers orbite = creerSystemeEtoilePlanete(1.0);
@@ -111,7 +111,7 @@ int main() {
 
         Univers univers = creerSystemeEtoilePlanete(1.0);
         pasSimulation(univers, pasLeapfrog, dt, pasParOrbite);
-        verifier(proche(univers.positions[1], Vector3Double(1, 0, 0), 1e-3), "kepler : retour au depart apres une periode", echecs);
+        verifier(proche(univers.positions[1], double3(1, 0, 0), 1e-3), "kepler : retour au depart apres une periode", echecs);
 
         bool rayonConstant = true;
         for (int numeroPas = 0; numeroPas < 10 * pasParOrbite; ++numeroPas) {
@@ -143,7 +143,7 @@ int main() {
     // ---------------------------------------------------------------------
     {
         const double duree = 2.0;
-        const Vector3Double reference = positionFinalePlanete(pasLeapfrog, 1e-5, duree);
+        const double3 reference = positionFinalePlanete(pasLeapfrog, 1e-5, duree);
 
         const double erreurEulerDt     = (positionFinalePlanete(pasEuler, 0.01,  duree) - reference).norme();
         const double erreurEulerDemiDt = (positionFinalePlanete(pasEuler, 0.005, duree) - reference).norme();
@@ -187,14 +187,14 @@ int main() {
         Univers univers = creerSystemeTroisCorps();
 
         auto quantiteDeMouvementTotale = [](const Univers& systeme) {
-            Vector3Double somme;
+            double3 somme;
             for (std::size_t indiceCorps = 0; indiceCorps < systeme.taille(); ++indiceCorps) {
                 somme += systeme.vitesses[indiceCorps] * systeme.masses[indiceCorps];
             }
             return somme;
         };
 
-        const Vector3Double quantiteInitiale = quantiteDeMouvementTotale(univers);
+        const double3 quantiteInitiale = quantiteDeMouvementTotale(univers);
         pasSimulation(univers, pasLeapfrog, 0.001, 1000);
 
         verifier(proche(quantiteDeMouvementTotale(univers), quantiteInitiale, 1e-12), "quantite de mouvement conservee", echecs);

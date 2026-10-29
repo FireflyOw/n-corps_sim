@@ -11,7 +11,7 @@ void calculAccelerations(Univers& univers) {
     const std::size_t nbCorps = univers.taille();
 
     // On remet toutes les accélérations à 0 avant de calculer les nouvelles
-    for (Vector3Double& accel : univers.accelerations) accel = Vector3Double();
+    for (double3& accel : univers.accelerations) accel = double3();
 
     // Boucles décalées pour éviter les doublons 
     for (std::size_t iCorps = 0; iCorps < nbCorps; ++iCorps) {
@@ -19,7 +19,7 @@ void calculAccelerations(Univers& univers) {
 
             // Calcul du vecteur allant de Corps vers Autre et de la distance² (pour 
             // économiser une racine carrée) adoucie par un facteur epsilon entre les deux
-            Vector3Double vecDistance = univers.positions[iAutre] - univers.positions[iCorps];
+            double3 vecDistance = univers.positions[iAutre] - univers.positions[iCorps];
             double distance2 = vecDistance.norme2() + univers.epsilon * univers.epsilon;
 
             // Calcul de la distance inverse au cube
@@ -96,7 +96,7 @@ double energieTotale(const Univers& univers) {
     for (std::size_t iCorps = 0; iCorps < nbCorps; ++iCorps) {
         for (std::size_t iAutre = iCorps + 1; iAutre < nbCorps; ++iAutre) {
             
-            Vector3Double vecDistance = univers.positions[iAutre] - univers.positions[iCorps];
+            double3 vecDistance = univers.positions[iAutre] - univers.positions[iCorps];
             double distance = std::sqrt(vecDistance.norme2() + univers.epsilon * univers.epsilon);
             
             // Calcul de l'énergie potentielle en (G * m1 * m2 / d)

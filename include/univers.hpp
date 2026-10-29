@@ -2,19 +2,19 @@
 
 #include <vector>
 #include "unites.hpp"
-#include "vector3double.hpp"
+#include "vecteurs.hpp"
 
 struct Corps { 
     double masse, rayon;    
-    Vector3Double position, vitesse;
+    double3 position, vitesse;
 
-    Corps(double masse, double rayon, Vector3Double position, Vector3Double vitesse) :
+    Corps(double masse, double rayon, double3 position, double3 vitesse) :
         masse(masse), rayon(rayon), position(position), vitesse(vitesse) {}
 };
 
 // Fonction pour créer un corps avec des infos en unités SI
 inline Corps corpsSI(const Unites& unites, double masse_kg, double rayon_m,
-                    Vector3Double position_m, Vector3Double vitesse_ms) {
+                    double3 position_m, double3 vitesse_ms) {
 
     return Corps(unites.versMasse(masse_kg), unites.versLongueur(rayon_m),
                  position_m / unites.longueur_m, vitesse_ms / unites.vitesse_ms());
@@ -23,7 +23,7 @@ inline Corps corpsSI(const Unites& unites, double masse_kg, double rayon_m,
 struct Univers {
     // On crée un tableau pour chaque info pour que chaque fonction puisse 
     // prendre ce dont elle a besoin sans avoir à copier les corps en entier
-    std::vector<Vector3Double> positions, vitesses, accelerations;
+    std::vector<double3> positions, vitesses, accelerations;
     std::vector<double> masses, rayons;
 
     double G = 1;
@@ -37,7 +37,7 @@ struct Univers {
         masses.push_back(corps.masse);
         rayons.push_back(corps.rayon);
 
-        accelerations.push_back(Vector3Double()); // vecteur nul au départ pour l'accélération
+        accelerations.push_back(double3()); // vecteur nul au départ pour l'accélération
     }
 
     // Fonction pour retirer les infos d'un corps des tableaux

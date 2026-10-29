@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "vector3double.hpp"
+#include "vecteurs.hpp"
 
 inline void verifier(bool condition, const char* nom, int& echecs) {
     if (!condition) {
@@ -16,7 +16,7 @@ inline bool egal(double a, double b) {
     return std::abs(a - b) < 1e-12;
 }
 
-inline bool egal(const Vector3Double& a, const Vector3Double& b) {
+inline bool egal(const double3& a, const double3& b) {
     return egal(a.x, b.x) && egal(a.y, b.y) && egal(a.z, b.z);
 }
 
@@ -26,6 +26,6 @@ inline bool proche(double a, double b, double tolerance) {
     return std::abs(a - b) < tolerance;
 }
 
-inline bool proche(const Vector3Double& a, const Vector3Double& b, double tolerance) {
+inline bool proche(const double3& a, const double3& b, double tolerance) {
     return (a - b).norme() < tolerance;
 }

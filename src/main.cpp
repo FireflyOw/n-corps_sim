@@ -41,8 +41,8 @@ int main() {
     Unites unites = {constantes::uniteAstronomique_m, constantes::masseSolaire_kg};
 
     std::vector<Corps> condInitiales = {
-        corpsSI(unites, constantes::masseSolaire_kg, 6.957e8, Vector3Double(0, 0, 0),        Vector3Double(0, 0, 0)),     // étoile
-        corpsSI(unites, 5.972e24,                    6.371e6, Vector3Double(1.496e11, 0, 0), Vector3Double(0, 29785, 0))  // planète
+        corpsSI(unites, constantes::masseSolaire_kg, 6.957e8, double3(0, 0, 0),        double3(0, 0, 0)),     // étoile
+        corpsSI(unites, 5.972e24,                    6.371e6, double3(1.496e11, 0, 0), double3(0, 29785, 0))  // planète
     };
 
     const double dt = unites.versTemps(3600.0); // en secondes
@@ -93,7 +93,7 @@ int main() {
 
         // Réinitialisation de la vue
         if (IsKeyPressed(KEY_C)) {
-            camera.positionVisee = Vector3Double();
+            camera.positionVisee = double3();
             camera.zoom = 200;
         }
 

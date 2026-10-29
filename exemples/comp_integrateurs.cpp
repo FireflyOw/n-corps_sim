@@ -14,8 +14,8 @@ using FonctionPas = void (*)(Univers&, double);
 
 Univers creerSystemeEtoilePlanete() {
     Univers univers;
-    univers.ajouter(Corps(1.0,   5, Vector3Double(0, 0, 0), Vector3Double(0, 0,   0)));  // étoile
-    univers.ajouter(Corps(1e-10, 5, Vector3Double(1, 0, 0), Vector3Double(0, 0.8, 0)));  // planète
+    univers.ajouter(Corps(1.0,   5, double3(0, 0, 0), double3(0, 0,   0)));  // étoile
+    univers.ajouter(Corps(1e-10, 5, double3(1, 0, 0), double3(0, 0.8, 0)));  // planète
     return univers;
 }
 
@@ -70,7 +70,7 @@ int main() {
     // Après un nombre entier d'orbites, la planète devrait être revenue en (1, 0, 0)
     std::printf("\nPosition finale de la planete (attendu : 1, 0, 0)\n");
     for (int indiceMethode = 0; indiceMethode < 3; ++indiceMethode) {
-        const Vector3Double& position = univers[indiceMethode].positions[1];
+        const double3& position = univers[indiceMethode].positions[1];
         std::printf("  %-12s (%8.4f, %8.4f, %8.4f)\n", nomsMethodes[indiceMethode], position.x, position.y, position.z);
     }
     return 0;
