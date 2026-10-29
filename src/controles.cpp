@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-void gestionControles(Simulation sim, CameraSim camera) {
+void gestionControles(Simulation& sim, CameraSim& camera) {
     // Gestion de la vitesse de simulation avec les flèches
     if (IsKeyPressed(KEY_UP)) sim.pasImage *= 2;
     else if (IsKeyPressed(KEY_DOWN)) sim.pasImage /= 2;

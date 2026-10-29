@@ -4,4 +4,4 @@
 #include "simulation.hpp"
 
 // Fonction de gestions des contrôles claviers/souris
-void gestionControles(Simulation sim, CameraSim camera);
+void gestionControles(Simulation& sim, CameraSim& camera);
