@@ -104,6 +104,6 @@ if(SIM_AFFICHAGE)
     target_link_libraries(fenetre_Raylib PRIVATE raylib)
 
     # Programme principal avec physique et affichage
-    add_executable(nbody src/main.cpp)
+    add_executable(nbody src/main.cpp src/controles.cpp)
     target_link_libraries(nbody PRIVATE sim raylib)
 endif()
