@@ -88,6 +88,15 @@ int main() {
         // Gestion de la pause avec Espace
         if (IsKeyPressed(KEY_SPACE)) simPause = !simPause;
 
+        // Gestion du déplacement à la souris
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) camera.deplacement(GetMouseDelta());
+
+        // Réinitialisation de la vue
+        if (IsKeyPressed(KEY_C)) {
+            camera.positionVisee = Vector3Double();
+            camera.zoom = 200;
+        }
+
         // Réinitialisation de la simulation avec R
         if (IsKeyPressed(KEY_R)) {
             initUnivers(univers, condInitiales);
