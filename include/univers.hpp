@@ -4,20 +4,23 @@
 #include "unites.hpp"
 #include "vecteurs.hpp"
 
+struct Couleur { float r, g, b; };
+
 struct Corps { 
-    double masse, rayon;    
+    double masse, rayon;
     double3 position, vitesse;
 
-    Corps(double masse, double rayon, double3 position, double3 vitesse) :
-        masse(masse), rayon(rayon), position(position), vitesse(vitesse) {}
+    Couleur couleur;
+
+    Corps(double masse, double rayon, double3 position, double3 vitesse, Couleur couleur = {1.0f, 1.0f, 1.0f}) :
+        masse(masse), rayon(rayon), position(position), vitesse(vitesse), couleur(couleur) {}
 };
 
 // Fonction pour créer un corps avec des infos en unités SI
-inline Corps corpsSI(const Unites& unites, double masse_kg, double rayon_m,
-                    double3 position_m, double3 vitesse_ms) {
+inline Corps corpsSI(const Unites& unites, double masse_kg, double rayon_m, double3 position_m, double3 vitesse_ms, Couleur couleur = {1, 1, 1}) {
 
     return Corps(unites.versMasse(masse_kg), unites.versLongueur(rayon_m),
-                 position_m / unites.longueur_m, vitesse_ms / unites.vitesse_ms());
+                 position_m / unites.longueur_m, vitesse_ms / unites.vitesse_ms(), couleur);
 }
 
 struct Univers {
@@ -25,6 +28,7 @@ struct Univers {
     // prendre ce dont elle a besoin sans avoir à copier les corps en entier
     std::vector<double3> positions, vitesses, accelerations;
     std::vector<double> masses, rayons;
+    std::vector<Couleur> couleurs;
 
     double G = 1;
     double temps = 0.0;
@@ -34,6 +38,7 @@ struct Univers {
     void ajouter(const Corps& corps) {
         positions.push_back(corps.position);
         vitesses.push_back(corps.vitesse);
+        couleurs.push_back(corps.couleur);
         masses.push_back(corps.masse);
         rayons.push_back(corps.rayon);
 
@@ -45,6 +50,7 @@ struct Univers {
         accelerations.clear();
         positions.clear();
         vitesses.clear();
+        couleurs.clear();
         masses.clear();
         rayons.clear();
     }
