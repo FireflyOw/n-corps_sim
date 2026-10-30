@@ -22,7 +22,7 @@ void gestionControles(Simulation& sim, CameraSim& camera) {
         camera.enMouvement = true;
         camera.deplacement(GetMouseDelta());
     }
-    else camera.enMouvement = true;
+    else camera.enMouvement = false;
 
     // Gestion du suivi actif d'un corps
     if (IsKeyPressed(KEY_F)) camera.suiviActif = !camera.suiviActif;
@@ -37,7 +37,7 @@ void gestionControles(Simulation& sim, CameraSim& camera) {
             --camera.iCorpsSuivi;
         }
         
-        if (!camera.enMouvement || IsKeyPressed(KEY_C)) camera.suiviActif = false;
+        if (camera.enMouvement || IsKeyPressed(KEY_C)) camera.suiviActif = false;
     }
 
     // Réinitialisation de la vue
