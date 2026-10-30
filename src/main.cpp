@@ -66,6 +66,7 @@ int main() {
         sim.avancer();
 
         gestionControles(sim, camera);
+        if (camera.suiviActif) camera.positionVisee = sim.univers.positions[camera.iCorpsSuivi];
 
         // -------------------------- Bloc affichage --------------------------
         BeginDrawing();

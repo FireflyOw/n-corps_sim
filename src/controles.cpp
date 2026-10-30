@@ -18,7 +18,27 @@ void gestionControles(Simulation& sim, CameraSim& camera) {
     if (IsKeyPressed(KEY_SPACE)) sim.simPause = !sim.simPause;
 
     // Gestion du déplacement à la souris
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) camera.deplacement(GetMouseDelta());
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        camera.enMouvement = true;
+        camera.deplacement(GetMouseDelta());
+    }
+    else camera.enMouvement = true;
+
+    // Gestion du suivi actif d'un corps
+    if (IsKeyPressed(KEY_F)) camera.suiviActif = !camera.suiviActif;
+
+    if (camera.suiviActif) {
+        if (IsKeyPressed(KEY_RIGHT)) {
+            ++camera.iCorpsSuivi;
+            if (camera.iCorpsSuivi > sim.univers.taille() - 1) camera.iCorpsSuivi = 0;
+        }
+        else if (IsKeyPressed(KEY_LEFT)) {
+            if (camera.iCorpsSuivi == 0) camera.iCorpsSuivi = sim.univers.taille();
+            --camera.iCorpsSuivi;
+        }
+        
+        if (!camera.enMouvement || IsKeyPressed(KEY_C)) camera.suiviActif = false;
+    }
 
     // Réinitialisation de la vue
     if (IsKeyPressed(KEY_C)) {

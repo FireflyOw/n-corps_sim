@@ -5,10 +5,14 @@
 
 struct CameraSim {
     Vector2 centreEcran;
+    double3 positionVisee;
     
     double zoom = 200;
     double facteurZoom = 1.2;
-    double3 positionVisee;
+
+    std::size_t iCorpsSuivi = 0;
+    bool suiviActif = false;
+    bool enMouvement = false;
 
     CameraSim(Vector2 centreEcran) : centreEcran(centreEcran) {}
 
