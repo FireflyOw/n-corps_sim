@@ -91,16 +91,17 @@ ajouter_test(unites_test       tests/unites_test.cpp)
 ajouter_test(univers_test      tests/univers_test.cpp)
 ajouter_test(physique_test     tests/physique_test.cpp)
 ajouter_test(simulation_test   tests/simulation_test.cpp)
+ajouter_test(ringBuffer_test   tests/ringBuffer_test.cpp)
 ajouter_test(integrateurs_test tests/integrateurs_test.cpp)
 
 # --- Programmes d'exemple ------------------------------------------------
-add_executable(comp_integrateurs exemples/comp_integrateurs.cpp)
+add_executable(comp_integrateurs examples/comp_integrateurs.cpp)
 target_link_libraries(comp_integrateurs PRIVATE sim)
 
 # --- Affichage -----------------------------------------------------------
 if(SIM_AFFICHAGE)
     # Petit programme qui ouvre une fenêtre : sert à vérifier que raylib fonctionne
-    add_executable(fenetre_Raylib exemples/fenetre_Raylib.cpp)
+    add_executable(fenetre_Raylib examples/fenetre_Raylib.cpp)
     target_link_libraries(fenetre_Raylib PRIVATE raylib)
 
     # Programme principal avec physique et affichage
