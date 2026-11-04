@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "vecteurs.hpp"
+#include "utility/vecteurs.hpp"
 
 inline void verifier(bool condition, const char* nom, int& echecs) {
     if (!condition) {

@@ -2,7 +2,7 @@
 #include <cmath>
 
 #include "outils_test.hpp"
-#include "vecteurs.hpp"
+#include "utility/vecteurs.hpp"
 
 static int echecs = 0;
 

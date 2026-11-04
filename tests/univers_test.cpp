@@ -3,7 +3,7 @@
 
 #include "univers.hpp"
 #include "outils_test.hpp"
-#include "vecteurs.hpp"
+#include "utility/vecteurs.hpp"
 
 Univers univers;
 
