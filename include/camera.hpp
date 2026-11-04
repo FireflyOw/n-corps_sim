@@ -21,7 +21,7 @@ struct CameraSim {
     Vector2 versEcran(const double3& positionSimulation) const {
         return Vector2 {
             centreEcran.x + static_cast<float>((positionSimulation.x - positionVisee.x) * zoom),
-            centreEcran.y - static_cast<float>((positionSimulation.y - positionVisee.y) * zoom)    // signe moins!
+            centreEcran.y - static_cast<float>((positionSimulation.y - positionVisee.y) * zoom)   // signe moins!
         };
     }
 
