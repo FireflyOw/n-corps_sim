@@ -1,7 +1,7 @@
 #pragma once
 
 #include "raylib.h"
-#include "vecteurs.hpp"
+#include "utility/vecteurs.hpp"
 
 struct CameraSim {
     Vector2 centreEcran;
