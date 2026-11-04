@@ -26,6 +26,8 @@ void Simulation::avancer() {
 void Simulation::reinitialiser() {
     initUnivers(univers, condInitiales);
 
+    trainees.assign(univers.taille(), TamponCirculaire<double3> (longueurTrainees));
+
     energieDepart = energieTotale(univers);
     eTotale       = energieDepart;
 }
