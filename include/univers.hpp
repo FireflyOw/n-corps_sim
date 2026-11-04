@@ -2,8 +2,7 @@
 
 #include <vector>
 #include "unites.hpp"
-#include "vecteurs.hpp"
-
+#include "utility/vecteurs.hpp"
 struct Couleur { float r, g, b; };
 
 struct Corps { 

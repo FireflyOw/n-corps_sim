@@ -2,10 +2,14 @@
 
 #include "unites.hpp"
 #include "univers.hpp"
+#include "utility/ringBuffer.hpp"
 
 struct Simulation {
     Univers univers;
     Unites unites;
+
+    std::size_t longueurTrainees = 500;
+    std::vector<TamponCirculaire<double3>> trainees;
 
     std::vector<Corps> condInitiales;
 
