@@ -1,6 +1,7 @@
 #include "physique.hpp"
 #include "simulation.hpp"
 
+#include <cmath>
 #include <algorithm>
 
 // Constructeur de la structure
@@ -15,6 +16,15 @@ void Simulation::avancer() {
     if (!simPause) {    
         for (std::size_t i = 0; i < pasImage; ++i) {
             pasLeapfrog(univers, dt);
+
+            // On ajoute la dernière position au tampon de chaque corps pour dessiner leur trajectoire
+            for (std::size_t iCorps = 0; iCorps < univers.taille(); ++iCorps) {
+                if (univers.temps - dernierPointTrainees[iCorps] >= intervalleTrainees[iCorps]) {
+                    trainees[iCorps].ajouter(univers.positions[iCorps]);
+
+                    dernierPointTrainees[iCorps] = univers.temps;
+                }
+            }
         }
 
         // Calcul de l'énergie totale du système
@@ -26,8 +36,24 @@ void Simulation::avancer() {
 void Simulation::reinitialiser() {
     initUnivers(univers, condInitiales);
 
+    // Création des tableaux de trainées à la bonne taille
+    intervalleTrainees.assign(univers.taille(), 0.0);
+    dernierPointTrainees.assign(univers.taille(), 0.0);
     trainees.assign(univers.taille(), TamponCirculaire<double3> (longueurTrainees));
 
+    // On parcours les corps pour calculer l'intervalle de dessin des trainées (en sautant le soleil)
+    for (std::size_t iCorps = 1; iCorps < univers.taille(); ++iCorps) {
+        double distanceSoleil = (univers.positions[iCorps] - univers.positions[0]).norme();
+        double distance3 = distanceSoleil * distanceSoleil * distanceSoleil;
+        double periode = 2 * M_PI * std::sqrt(distance3 / univers.masses[0]);
+
+        intervalleTrainees[iCorps] = fractionOrbite * periode / longueurTrainees;
+    }
+
+    // Pour le soleil, on prend l'intervalle le plus grand de la liste (pas très important tant qu'on zoom pas dessus)
+    if (univers.taille() > 1) intervalleTrainees[0] = *std::max_element(intervalleTrainees.begin() + 1, intervalleTrainees.end());
+        
+    // Calculs des énergies de départ
     energieDepart = energieTotale(univers);
     eTotale       = energieDepart;
 }
