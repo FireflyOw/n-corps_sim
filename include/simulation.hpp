@@ -8,7 +8,13 @@ struct Simulation {
     Univers univers;
     Unites unites;
 
+    // Paramètres des trainées de trajectoire
+    double fractionOrbite = 0.5;
     std::size_t longueurTrainees = 500;
+
+    // Tableaux pour les trainées
+    std::vector<double> intervalleTrainees;
+    std::vector<double> dernierPointTrainees;
     std::vector<TamponCirculaire<double3>> trainees;
 
     std::vector<Corps> condInitiales;
