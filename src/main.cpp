@@ -82,7 +82,11 @@ int main() {
             // Conversion de la couleur du corps dans le format utilisé par raylib
             Vector4 couleurBase = {sim.univers.couleurs[iCorps].r, sim.univers.couleurs[iCorps].g, sim.univers.couleurs[iCorps].b, 1};
             Color couleur = ColorFromNormalized(couleurBase); // fonction de conversion donnée
-            
+
+            for (std::size_t j = 0; j + 1 < sim.trainees[iCorps].taille(); ++j) {
+                DrawLineV(camera.versEcran(sim.trainees[iCorps][j]), camera.versEcran(sim.trainees[iCorps][j + 1]), couleur);
+            }
+
             double rayonAffiche = std::max(sim.univers.rayons[iCorps] * camera.zoom, 1.0);
 
             if (rayonTest) DrawCircleV(positionEcran, 5, couleur);
