@@ -22,7 +22,7 @@ void Simulation::avancer() {
                 if (univers.temps - dernierPointTrainees[iCorps] >= intervalleTrainees[iCorps]) {
                     trainees[iCorps].ajouter(univers.positions[iCorps]);
 
-                    dernierPointTrainees[iCorps] = univers.temps;
+                    dernierPointTrainees[iCorps] += intervalleTrainees[iCorps];
                 }
             }
         }
