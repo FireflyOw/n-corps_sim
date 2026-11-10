@@ -8,6 +8,8 @@ struct Simulation {
     Univers univers;
     Unites unites;
 
+    float frametime;
+
     // Paramètres des trainées de trajectoire
     double fractionOrbite = 0.5;
     std::size_t longueurTrainees = 500;
