@@ -51,6 +51,36 @@ if(SIM_AFFICHAGE)
         GIT_SHALLOW    TRUE
     )
     FetchContent_MakeAvailable(raylib)
+
+    # --- Interface utilisateur : Dear ImGui + rlImGui -------------------------
+    # Dear ImGui dessine les menus ; rlImGui est le "pont" qui lui permet de
+    # fonctionner avec raylib (souris, clavier, affichage).
+    # Aucun des deux n'a de CMakeLists.txt : on compile leurs .cpp nous-memes
+    # dans une petite bibliotheque statique, creee AVANT add_compile_options
+    # pour que nos avertissements ne s'appliquent pas a leur code.
+    FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG        v1.92.9
+        GIT_SHALLOW    TRUE
+    )
+    FetchContent_Declare(
+        rlimgui
+        GIT_REPOSITORY https://github.com/raylib-extras/rlImGui.git
+        GIT_TAG        1550009359ad975927f7f0e4a3f47e3f27123ea9
+    )
+    FetchContent_MakeAvailable(imgui rlimgui)
+
+    add_library(interface_imgui STATIC
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${rlimgui_SOURCE_DIR}/rlImGui.cpp
+    )
+    target_include_directories(interface_imgui PUBLIC ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR})
+    target_link_libraries(interface_imgui PUBLIC raylib)
 endif()
 
 # --- Avertissements du compilateur --------------------------------------
@@ -105,7 +135,11 @@ if(SIM_AFFICHAGE)
     add_executable(fenetre_Raylib examples/fenetre_Raylib.cpp)
     target_link_libraries(fenetre_Raylib PRIVATE raylib)
 
+    # Programme d'exemple d'une fenêtre d'interface ImGUI
+    add_executable(fenetre_ImGui examples/fenetre_ImGui.cpp)
+    target_link_libraries(fenetre_ImGui PRIVATE interface_imgui)
+
     # Programme principal avec physique et affichage
-    add_executable(nbody src/main.cpp src/controles.cpp)
-    target_link_libraries(nbody PRIVATE sim raylib)
+    add_executable(nbody src/main.cpp src/controles.cpp src/interface.cpp)
+    target_link_libraries(nbody PRIVATE sim interface_imgui)
 endif()
