@@ -5,6 +5,7 @@
 #include "physique.hpp"
 #include "controles.hpp"
 #include "simulation.hpp"
+#include "interface.hpp"
 
 #include <chrono>
 #include <algorithm>
@@ -13,8 +14,10 @@ int main() {
     // ---------------------------------------------------------------------
     //                     Réglages de la fenêtre raylib 
     // ---------------------------------------------------------------------
-    const int largeur = 800;
-    const int hauteur = 600;
+    const int largeur = 1280;
+    const int hauteur = 720;
+
+    bool quitter = false;
 
     Vector2 centreEcran = { largeur / 2.0f, hauteur / 2.0f };
     CameraSim camera(centreEcran);
@@ -22,6 +25,15 @@ int main() {
     SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     InitWindow(largeur, hauteur, "Simulation N-Corps");
     SetTargetFPS(60);
+
+    // ---------------------------------------------------------------------
+    //               Réglages de l'interface ImGui et police
+    // ---------------------------------------------------------------------
+    rlImGuiSetup(true);
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.FontScaleMain = 0.9f;      // taille du texte
+    style.ScaleAllSizes(1.0f);       // marges, curseurs, cases
 
     // On prend en compte l'échelle de l'affichage (120% dans mon cas, ça renvoie 1.2)
     Vector2 facteurEchelle = GetWindowScaleDPI();
@@ -59,7 +71,7 @@ int main() {
 
     auto debutSim = std::chrono::steady_clock::now();
 
-    while(!WindowShouldClose()) {
+    while(!WindowShouldClose() && !quitter) {
         auto frameStart = std::chrono::steady_clock::now();
 
         // -------------------- Bloc physique / contrôles --------------------
@@ -73,7 +85,7 @@ int main() {
         ClearBackground(BLACK);
 
         Vector2 largeurPAUSED = MeasureTextEx(googleSans, "PAUSED", fontSize, 2);
-        if (sim.simPause) DrawTextEx(googleSans, "PAUSED", {(largeur / 2) - (largeurPAUSED.x / 2), 10}, fontSize, 2, WHITE);
+        if (sim.simPause) DrawTextEx(googleSans, "PAUSED", {(largeur / 2) - (largeurPAUSED.x / 2), hauteur - 30}, fontSize, 2, WHITE);
 
         // Dessin d'un cercle coloré pour chaque corps de la liste
         for (std::size_t iCorps = 0; iCorps < sim.univers.taille(); ++iCorps) {
@@ -93,28 +105,19 @@ int main() {
             else DrawCircleV(positionEcran, rayonAffiche, couleur);
         }
 
+        // Calcul du temps depuis le lancement de la simulation (secondes réelles)
         auto tempsActuel = std::chrono::steady_clock::now();
-        auto tempsTotal  = std::chrono::duration<float, std::milli>(tempsActuel - debutSim);
-
-        // Affichages d'infos (temps de sim., énergie totale, etc...)
-        DrawTextEx(googleSans, TextFormat("temps = %.2f jours", sim.calculTempsSim()),    {10, 50},                fontSize, 2, WHITE);
-        DrawTextEx(googleSans, TextFormat("e_totale = %.2e J", sim.calculEnergieReel()),  {10, 50 + fontSize},     fontSize, 2, WHITE);
-        DrawTextEx(googleSans, TextFormat("Erreur = %.2e", sim.calculErreurEnergie()),    {10, 50 + 2 * fontSize}, fontSize, 2, WHITE);
-
-        Vector2 largeurTempsTotal = MeasureTextEx(googleSans, TextFormat("%.2f s", tempsTotal.count() / 1000), fontSize, 2);
-        DrawTextEx(googleSans, TextFormat("%.2f s", tempsTotal.count() / 1000), {largeur - (largeurTempsTotal.x + 10), 10}, fontSize, 2, WHITE);
-
-        DrawFPS(10, 10);
+        float tempsTotal  = std::chrono::duration<float, std::milli>(tempsActuel - debutSim).count();
 
         // Calcul et affichage du frametime (temps pour créer une image)
         auto frameEnd  = std::chrono::steady_clock::now();
         auto frametime = std::chrono::duration<float, std::milli>(frameEnd - frameStart);
 
-        DrawTextEx(googleSans, TextFormat("Frametime = %.2f ms", frametime.count()), {10, 50 + 3 * fontSize}, fontSize, 2, WHITE);
-
+        quitter = dessinerInterface(sim, camera, unites, tempsTotal);
         EndDrawing();
     }
 
     UnloadFont(googleSans);
+    rlImGuiShutdown();
     CloseWindow();
 }
