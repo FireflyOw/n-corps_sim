@@ -2,6 +2,7 @@
 #include "simulation.hpp"
 
 #include <cmath>
+#include <chrono>
 #include <algorithm>
 
 // Constructeur de la structure
@@ -13,6 +14,8 @@ Simulation::Simulation(const Unites& unites, const std::vector<Corps>& condIniti
 
 // Avancer la simulation en fonction du pas de temps et du nombre de pas par image
 void Simulation::avancer() {
+    auto frameStart = std::chrono::steady_clock::now();
+
     if (!simPause) {    
         for (std::size_t i = 0; i < pasImage; ++i) {
             pasLeapfrog(univers, dt);
@@ -29,6 +32,10 @@ void Simulation::avancer() {
 
         // Calcul de l'énergie totale du système
         eTotale = energieTotale(univers);
+
+        // Calcul et affichage du frametime (temps pour créer une image)
+        auto frameEnd  = std::chrono::steady_clock::now();
+        frametime = std::chrono::duration<float, std::milli>(frameEnd - frameStart).count();
     }
 }
 
