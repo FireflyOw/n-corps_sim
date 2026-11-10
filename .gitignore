@@ -40,4 +40,5 @@ snapshots/
 *.mp4
 
 # Autres dossiers/fichiers
+imgui.ini
 gitToken.txt
